@@ -1,0 +1,77 @@
+# This file is part of Joyeuse.
+
+# Joyeuse is free software: you can redistribute it and/or modify it under the
+# terms of the GNU General Public License as published by the Free Software
+# Foundation, either version 3 of the License, or (at your option) any later
+# version.
+#
+# Joyeuse is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+# A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with
+# Joyeuse. If not, see <https://www.gnu.org/licenses/>.
+
+from tkinter import Tk, ttk, font
+import tkinter
+
+appname = "lodn"
+
+class MainWindow(object):
+    '''
+    classdocs
+    '''
+
+    def __init__(self, tree_structure):
+        '''
+        Constructor
+        '''
+        self.__tree_structure = tree_structure
+        self.__root = Tk(className=appname)
+        self.__close_event_observers = []
+        self.__root.protocol('WM_DELETE_WINDOW', self.__close_event_handler)
+        rceo = self.__register_close_event_observer
+        rceo(self.__root.destroy)
+        self.__setup_window()
+
+    def __close_event_handler(self):
+        for ceo in reversed(self.__close_event_observers):
+            ceo()
+
+    def __register_close_event_observer(self, close_event_observer):
+        self.__close_event_observers.append(close_event_observer)
+
+    def __setup_window(self):
+        self.__root.title(appname.capitalize())
+
+    def __setup_notebook(self):
+        self.__notebook = notebook = ttk.Notebook(self.__root)
+        notebook.pack(
+            side=tkinter.TOP,
+            anchor=tkinter.NW,
+            fill=tkinter.BOTH,
+            expand=1,
+            padx=(6, 6),
+            pady=(6, 6)
+        )
+        self.__setup_tabs(notebook)
+
+    def __setup_tabs(self, notebook):
+        self.__tutorials = tutorials = TutorialsTab(notebook)
+        tutorials.pack(fill=tkinter.BOTH, expand=True)
+        tutorials.columnconfigure(0, weight=1)
+        self.__register_close_event_observer(tutorials.stop_video)
+        notebook.add(tutorials, text=_("Tutorials"))
+
+        self.__settings = settings = SettingsTab(
+            notebook,
+            lambda a, b, c: self.__save_scheduler()
+        )
+        settings.pack(fill=tkinter.BOTH, expand=True)
+        settings.columnconfigure(0, weight=1)
+        notebook.add(settings, text=_("Parameters"))
+
+        notebook.pack(expand=1, fill="both")
+
+    def loop(self):
+        self.__root.mainloop()
