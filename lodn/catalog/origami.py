@@ -14,14 +14,6 @@ class Origami:
 
     # properties from the meta.jon file
     @property
-    def types(self):
-        return self.__meta.get("types", None)
-
-    @property
-    def quotation(self):
-        return self.__meta.get("quotation", None)
-
-    @property
     def categorie(self):
         return self.__meta.get("categorie", None)
 
@@ -30,8 +22,8 @@ class Origami:
         return self.__meta.get("commentaires", None)
 
     @property
-    def longueur(self):
-        return self.__meta.get("longueur", None)
+    def diametre(self):
+        return self.__meta.get("diametre", None)
 
     @property
     def hauteur(self):
@@ -42,8 +34,16 @@ class Origami:
         return self.__meta.get("largeur", None)
 
     @property
-    def diametre(self):
-        return self.__meta.get("diameter", None)
+    def longueur(self):
+        return self.__meta.get("longueur", None)
+
+    @property
+    def quotation(self):
+        return self.__meta.get("quotation", None)
+
+    @property
+    def types(self):
+        return self.__meta.get("types", None)
     # end of properties from the meta.jon file
 
     def __str__(self):
