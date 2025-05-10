@@ -90,8 +90,6 @@ class CatalogTab(Frame):
     def __materials_to_selection(materials):
         i = 1
         res = []
-        if materials is None:
-            return res
 
         for m in Material:
             if m.value in materials:

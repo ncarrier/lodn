@@ -15,35 +15,35 @@ class Origami:
     # properties from the meta.jon file
     @property
     def category(self):
-        return self.__meta.get("category", None)
+        return self.__meta.get("category", "object")
 
     @property
     def comment(self):
-        return self.__meta.get("comment", None)
+        return self.__meta.get("comment", "")
 
     @property
     def diameter(self):
-        return self.__meta.get("diameter", None)
+        return self.__meta.get("diameter", 0)
 
     @property
     def height(self):
-        return self.__meta.get("height", None)
+        return self.__meta.get("height", 0)
 
     @property
     def length(self):
-        return self.__meta.get("length", None)
+        return self.__meta.get("length", 0)
 
     @property
     def materials(self):
-        return self.__meta.get("materials", None)
+        return self.__meta.get("materials", [])
 
     @property
     def quotation(self):
-        return self.__meta.get("quotation", None)
+        return self.__meta.get("quotation", 0)
 
     @property
     def width(self):
-        return self.__meta.get("width", None)
+        return self.__meta.get("width", 0)
     # end of properties from the meta.jon file
 
     def __str__(self):
