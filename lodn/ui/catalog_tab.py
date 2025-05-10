@@ -56,7 +56,7 @@ class CatalogTab(Frame):
     def __setup_materials(self):
         self.__materials = materials = ttk.Treeview(self, show="",
                                                     columns=("name"))
-        materials.grid(column=2, row=7, sticky="nsew")
+        materials.grid(column=2, row=6, sticky="nsew")
         for c in Material:
             materials.insert("", END, values=(c.value,))
 
