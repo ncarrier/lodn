@@ -17,7 +17,7 @@ from .ui.main_window import MainWindow
 
 
 def usage(status):
-    print(_("Usage: lodn [/path/to/tree/structure]"))
+    print("Usage: lodn [/path/to/tree/structure]")
     sys.exit(status)
 
 

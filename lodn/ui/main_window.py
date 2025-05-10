@@ -1,21 +1,26 @@
-# This file is part of Joyeuse.
+# This file is part of lodn.
 
-# Joyeuse is free software: you can redistribute it and/or modify it under the
+# lodn is free software: you can redistribute it and/or modify it under the
 # terms of the GNU General Public License as published by the Free Software
 # Foundation, either version 3 of the License, or (at your option) any later
 # version.
 #
-# Joyeuse is distributed in the hope that it will be useful, but WITHOUT ANY
+# lodn is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
 # A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# Joyeuse. If not, see <https://www.gnu.org/licenses/>.
+# lodn. If not, see <https://www.gnu.org/licenses/>.
 
-from tkinter import Tk, ttk, font
+from tkinter import Tk, ttk
 import tkinter
+from lodn.ui.origamis_tab import OrigamisTab
 
 appname = "lodn"
+
+import gi  # noqa F401
+from gi.repository import GObject  # noqa F401
+
 
 class MainWindow(object):
     '''
@@ -28,10 +33,13 @@ class MainWindow(object):
         '''
         self.__tree_structure = tree_structure
         self.__root = Tk(className=appname)
+        self.__loop = GObject.MainLoop()
+        GObject.idle_add(self.__refresh)
         self.__close_event_observers = []
         self.__root.protocol('WM_DELETE_WINDOW', self.__close_event_handler)
         rceo = self.__register_close_event_observer
         rceo(self.__root.destroy)
+        rceo(self.__loop.quit)
         self.__setup_window()
 
     def __close_event_handler(self):
@@ -43,6 +51,7 @@ class MainWindow(object):
 
     def __setup_window(self):
         self.__root.title(appname.capitalize())
+        self.__setup_notebook()
 
     def __setup_notebook(self):
         self.__notebook = notebook = ttk.Notebook(self.__root)
@@ -57,21 +66,25 @@ class MainWindow(object):
         self.__setup_tabs(notebook)
 
     def __setup_tabs(self, notebook):
-        self.__tutorials = tutorials = TutorialsTab(notebook)
-        tutorials.pack(fill=tkinter.BOTH, expand=True)
-        tutorials.columnconfigure(0, weight=1)
-        self.__register_close_event_observer(tutorials.stop_video)
-        notebook.add(tutorials, text=_("Tutorials"))
+        self.__origamis = origamis = OrigamisTab(notebook)
+        origamis.pack(fill=tkinter.BOTH, expand=True)
+        origamis.columnconfigure(0, weight=1)
+        self.__register_close_event_observer(origamis.stop_video)
+        notebook.add(origamis, text="origamis")
 
-        self.__settings = settings = SettingsTab(
-            notebook,
-            lambda a, b, c: self.__save_scheduler()
-        )
-        settings.pack(fill=tkinter.BOTH, expand=True)
-        settings.columnconfigure(0, weight=1)
-        notebook.add(settings, text=_("Parameters"))
+        # self.__settings = settings = SettingsTab(
+        #     notebook,
+        #     lambda a, b, c: self.__save_scheduler()
+        # )
+        # settings.pack(fill=tkinter.BOTH, expand=True)
+        # settings.columnconfigure(0, weight=1)
+        # notebook.add(settings, text=_("Parameters"))
 
         notebook.pack(expand=1, fill="both")
 
+    def __refresh(self):
+        self.__root.update()
+        return True
+
     def loop(self):
-        self.__root.mainloop()
+        self.__loop.run()
