@@ -25,12 +25,17 @@ class CatalogTab(Frame):
     def __init__(self, parent, catalog):
         Frame.__init__(self, parent)
         self.grid_rowconfigure(0, weight=1)
-        self.__tree_view = ttk.Treeview(self, columns=("nom"))
-        self.__tree_view['show'] = 'headings'
-        self.__tree_view.grid(column=0, row=0, sticky=NSEW)
+        self.__treeview = ttk.Treeview(
+            self, columns=("nom"),
+            selectmode="browse"
+        )
+        self.__treeview['show'] = 'headings'  # disable first column
+        self.__treeview.grid(column=0, row=0, sticky=NSEW)
 
         for o in catalog.catalog:
-            self.__tree_view.insert("", "end", values=(o.name))
+            self.__treeview.insert("", "end", values=(o.name,))
+            print(o.name)
+        self.__treeview.bind('<<TreeviewSelect>>', self.on_treeview_select)
         # Gst.init(None)
         # self.__player = None
         # self.__gst = Gst.ElementFactory.make("playbin", "player")
@@ -47,6 +52,11 @@ class CatalogTab(Frame):
         # bus.connect("message", self.__on_eos)
         # bus.connect("sync-message::element", self.__set_frame_handle)
 
+    def on_treeview_select(self, event):
+        index = self.__treeview.focus()
+        item = self.__treeview.item(index)
+        name = item["values"][0]
+        print(name)
     # def __on_eos(self, bus, message):
     #     if message.type == Gst.MessageType.EOS:
     #         self.stop_video()
