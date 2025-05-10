@@ -47,6 +47,6 @@ class Origami:
     # end of properties from the meta.jon file
 
     def __str__(self):
-        return (f"{self.name} - {self.types} - {self.quotation} - "
-                f"{self.commentaires} - {self.longueur} - {self.hauteur} - "
-                f"{self.largeur} - {self.diametre}")
+        return (f"{self.name=} - {self.types=} - {self.quotation=} - "
+                f"{self.commentaires=} - {self.longueur=} - {self.hauteur=} - "
+                f"{self.largeur=} - {self.diametre=}")

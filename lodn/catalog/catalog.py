@@ -6,7 +6,8 @@ class Catalog(object):
     def __init__(self, path):
         self.__catalog = []
         for f in listdir(path):
-            self.__catalog.append(Origami(f"{path}/{f}"))
+            o = Origami(f"{path}/{f}")
+            self.__catalog.append(o)
 
     @property
     def catalog(self):
