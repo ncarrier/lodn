@@ -31,6 +31,7 @@ class CatalogTab(Frame):
         )
         self.__treeview['show'] = 'headings'  # disable first column
         self.__treeview.grid(column=0, row=0, sticky=NSEW)
+        self.__catalog = catalog
 
         for o in catalog.catalog:
             self.__treeview.insert("", "end", values=(o.name,))
@@ -56,7 +57,8 @@ class CatalogTab(Frame):
         index = self.__treeview.focus()
         item = self.__treeview.item(index)
         name = item["values"][0]
-        print(name)
+        origami = self.__catalog.get_by_name(name)
+        print(origami)
     # def __on_eos(self, bus, message):
     #     if message.type == Gst.MessageType.EOS:
     #         self.stop_video()

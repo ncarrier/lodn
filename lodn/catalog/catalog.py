@@ -11,3 +11,10 @@ class Catalog(object):
     @property
     def catalog(self):
         return self.__catalog
+
+    def get_by_name(self, name):
+        for o in self.catalog:
+            if o.name == name:
+                return o
+
+        return None
