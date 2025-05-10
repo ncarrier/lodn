@@ -25,18 +25,26 @@ class CatalogTab(Frame):
     def __init__(self, parent, catalog):
         Frame.__init__(self, parent)
         self.grid_rowconfigure(0, weight=1)
-        self.__treeview = ttk.Treeview(
-            self, columns=("nom"),
+        self.__catalog = catalog
+        self.__parent = parent
+        self.__default_item = "I001"
+
+        self.__setup_treeview()
+
+    def __setup_treeview(self):
+        self.__treeview = tv = ttk.Treeview(
+            self,
+            show="headings",  # disable first column
+            columns=("nom"),
             selectmode="browse"
         )
-        self.__treeview['show'] = 'headings'  # disable first column
-        self.__treeview.grid(column=0, row=0, sticky=NSEW)
-        self.__catalog = catalog
+        for o in self.__catalog.catalog:
+            tv.insert("", "end", values=(o.name,))
+        tv.bind('<<TreeviewSelect>>', self.on_treeview_select)
+        tv.grid(column=0, row=0, sticky=NSEW)
+        tv.focus(self.__default_item)
+        tv.selection_set(self.__default_item)
 
-        for o in catalog.catalog:
-            self.__treeview.insert("", "end", values=(o.name,))
-            print(o.name)
-        self.__treeview.bind('<<TreeviewSelect>>', self.on_treeview_select)
         # Gst.init(None)
         # self.__player = None
         # self.__gst = Gst.ElementFactory.make("playbin", "player")
@@ -54,8 +62,9 @@ class CatalogTab(Frame):
         # bus.connect("sync-message::element", self.__set_frame_handle)
 
     def on_treeview_select(self, event):
-        index = self.__treeview.focus()
-        item = self.__treeview.item(index)
+        tv = self.__treeview
+        index = tv.focus()
+        item = tv.item(index)
         name = item["values"][0]
         origami = self.__catalog.get_by_name(name)
         print(origami)
