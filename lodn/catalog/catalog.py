@@ -7,3 +7,7 @@ class Catalog(object):
         self.__catalog = []
         for f in listdir(path):
             self.__catalog.append(Origami(f"{path}/{f}"))
+
+    @property
+    def catalog(self):
+        return self.__catalog

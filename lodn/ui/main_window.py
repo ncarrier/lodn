@@ -14,7 +14,7 @@
 
 from tkinter import Tk, ttk
 import tkinter
-from lodn.ui.origamis_tab import OrigamisTab
+from lodn.ui.catalog_tab import CatalogTab
 from lodn.catalog.catalog import Catalog
 
 appname = "lodn"
@@ -68,11 +68,11 @@ class MainWindow(object):
         self.__setup_tabs(notebook)
 
     def __setup_tabs(self, notebook):
-        self.__origamis = origamis = OrigamisTab(notebook)
-        origamis.pack(fill=tkinter.BOTH, expand=True)
-        origamis.columnconfigure(0, weight=1)
-        self.__register_close_event_observer(origamis.stop_video)
-        notebook.add(origamis, text="origamis")
+        self.__catalog = catalog = CatalogTab(notebook, self.__catalog)
+        catalog.pack(fill=tkinter.BOTH, expand=True)
+        catalog.columnconfigure(0, weight=1)
+        self.__register_close_event_observer(catalog.stop_video)
+        notebook.add(catalog, text="catalog")
 
         # self.__settings = settings = SettingsTab(
         #     notebook,

@@ -11,7 +11,7 @@
 #
 # You should have received a copy of the GNU General Public License along with
 # lodn. If not, see <https://www.gnu.org/licenses/>.
-from tkinter import Frame  # , Button, EW, NSEW
+from tkinter import Frame, ttk, NSEW  # , Button, EW
 
 import gi
 gi.require_version('Gst', '1.0')
@@ -21,10 +21,16 @@ gi.require_version('GstVideo', '1.0')
 from gi.repository import GstVideo  # noqa E402,F401
 
 
-class OrigamisTab(Frame):
-    def __init__(self, parent):
+class CatalogTab(Frame):
+    def __init__(self, parent, catalog):
         Frame.__init__(self, parent)
         self.grid_rowconfigure(0, weight=1)
+        self.__tree_view = ttk.Treeview(self, columns=("nom"))
+        self.__tree_view['show'] = 'headings'
+        self.__tree_view.grid(column=0, row=0, sticky=NSEW)
+
+        for o in catalog.catalog:
+            self.__tree_view.insert("", "end", values=(o.name))
         # Gst.init(None)
         # self.__player = None
         # self.__gst = Gst.ElementFactory.make("playbin", "player")
