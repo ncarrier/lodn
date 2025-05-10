@@ -15,6 +15,7 @@
 from tkinter import Tk, ttk
 import tkinter
 from lodn.ui.origamis_tab import OrigamisTab
+from lodn.catalog.catalog import Catalog
 
 appname = "lodn"
 
@@ -32,6 +33,7 @@ class MainWindow(object):
         Constructor
         '''
         self.__tree_structure = tree_structure
+        self.__catalog = Catalog(tree_structure)
         self.__root = Tk(className=appname)
         self.__loop = GObject.MainLoop()
         GObject.idle_add(self.__refresh)
