@@ -11,8 +11,7 @@
 #
 # You should have received a copy of the GNU General Public License along with
 # lodn. If not, see <https://www.gnu.org/licenses/>.
-from tkinter import Frame, ttk, Label, Entry, END  # , Button
-
+from tkinter import Frame, ttk, Label, Entry, END, OptionMenu, StringVar
 import gi
 gi.require_version('Gst', '1.0')
 from gi.repository import Gst, GObject  # noqa E402
@@ -20,6 +19,7 @@ from gi.repository import Gst, GObject  # noqa E402
 gi.require_version('GstVideo', '1.0')
 from gi.repository import GstVideo  # noqa E402,F401
 from lodn.catalog.material import Material  # noqa E402
+from lodn.catalog.category import Category  # noqa E402
 
 
 class CatalogTab(Frame):
@@ -53,6 +53,18 @@ class CatalogTab(Frame):
         tv.focus(self.__default_item)
         tv.selection_set(self.__default_item)
 
+    def __setup_name(self):
+        self.__name_entry = Entry(self)
+        self.__name_entry.grid(row=0, column=2, sticky="we", padx=(6, 6),
+                               pady=(6, 6))
+
+    def __setup_category(self):
+        self.__category_var = var = StringVar(self)
+        categories = [c.value for c in Category]
+        self.__category = OptionMenu(self, var, *categories)
+        self.__category.grid(row=1, column=2, sticky="we", padx=(6, 6),
+                             pady=(6, 6))
+
     def __setup_materials(self):
         self.__materials = materials = ttk.Treeview(self, show="",
                                                     columns=("name"))
@@ -68,10 +80,8 @@ class CatalogTab(Frame):
             label.grid(row=i, column=1, sticky="w", padx=(6, 6), pady=(6, 6))
             i += 1
 
-        self.__name_entry = Entry(self)
-        self.__name_entry.grid(row=0, column=2, sticky="we", padx=(6, 6),
-                               pady=(6, 6))
-
+        self.__setup_name()
+        self.__setup_category()
         self.__setup_materials()
 
     def __get_current_origami(self):
@@ -85,6 +95,9 @@ class CatalogTab(Frame):
     def __update_name(self, origami):
         self.__name_entry.delete(0, END)
         self.__name_entry.insert(END, origami.name)
+
+    def __update_category(self, origami):
+        self.__category_var.set(origami.category)
 
     @staticmethod
     def __materials_to_selection(materials):
@@ -104,8 +117,10 @@ class CatalogTab(Frame):
         m.selection_set(selection)
 
     def __on_treeview_select(self, event):
+        # TODO here save the previous item if any
         origami = self.__get_current_origami()
         self.__update_name(origami)
+        self.__update_category(origami)
         self.__update_materials(origami)
 
     def stop_video(self):
