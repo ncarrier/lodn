@@ -14,39 +14,39 @@ class Origami:
 
     # properties from the meta.jon file
     @property
-    def categorie(self):
-        return self.__meta.get("categorie", None)
+    def category(self):
+        return self.__meta.get("category", None)
 
     @property
-    def commentaires(self):
-        return self.__meta.get("commentaires", None)
+    def comment(self):
+        return self.__meta.get("comment", None)
 
     @property
-    def diametre(self):
-        return self.__meta.get("diametre", None)
+    def diameter(self):
+        return self.__meta.get("diameter", None)
 
     @property
-    def hauteur(self):
-        return self.__meta.get("hauteur", None)
+    def height(self):
+        return self.__meta.get("height", None)
 
     @property
-    def largeur(self):
-        return self.__meta.get("largeur", None)
+    def length(self):
+        return self.__meta.get("length", None)
 
     @property
-    def longueur(self):
-        return self.__meta.get("longueur", None)
+    def materials(self):
+        return self.__meta.get("materials", None)
 
     @property
     def quotation(self):
         return self.__meta.get("quotation", None)
 
     @property
-    def types(self):
-        return self.__meta.get("types", None)
+    def width(self):
+        return self.__meta.get("width", None)
     # end of properties from the meta.jon file
 
     def __str__(self):
-        return (f"{self.name=} - {self.types=} - {self.quotation=} - "
-                f"{self.commentaires=} - {self.longueur=} - {self.hauteur=} - "
-                f"{self.largeur=} - {self.diametre=}")
+        return (f"{self.name=} - {self.category=} - {self.comment=} - "
+                f"{self.diameter=} - {self.height=} - {self.length=} - "
+                f"{self.materials=} - {self.quotation=} - {self.width}")

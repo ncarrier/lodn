@@ -19,11 +19,12 @@ from gi.repository import Gst, GObject  # noqa E402
 
 gi.require_version('GstVideo', '1.0')
 from gi.repository import GstVideo  # noqa E402,F401
+from lodn.catalog.material import Material  # noqa E402
 
 
 class CatalogTab(Frame):
-    fields = ["name", "categorie", "commentaires", "diametre", "hauteur",
-              "largeur", "longueur", "quotation", "types"]
+    fields = ["name", "category", "comment", "diameter", "height",
+              "length", "materials", "quotation", "width"]
 
     def __init__(self, parent, catalog):
         Frame.__init__(self, parent)
@@ -39,7 +40,7 @@ class CatalogTab(Frame):
         self.__treeview = tv = ttk.Treeview(
             self,
             show="",  # disable first column and headings
-            columns=("nom"),
+            columns=("name"),
             selectmode="browse"
         )
         for o in self.__catalog.catalog:
@@ -51,6 +52,13 @@ class CatalogTab(Frame):
         # the selection_set allows tv.focus() to return a valid item index
         tv.focus(self.__default_item)
         tv.selection_set(self.__default_item)
+
+    def __setup_materials(self):
+        self.__materials = materials = ttk.Treeview(self, show="",
+                                                    columns=("name"))
+        materials.grid(column=2, row=7, sticky="nsew")
+        for c in Material:
+            materials.insert("", END, values=(c.value,))
 
     def __setup_controls(self):
         # frame = Frame
@@ -64,21 +72,7 @@ class CatalogTab(Frame):
         self.__name_entry.grid(row=0, column=2, sticky="we", padx=(6, 6),
                                pady=(6, 6))
 
-        # Gst.init(None)
-        # self.__player = None
-        # self.__gst = Gst.ElementFactory.make("playbin", "player")
-        # self.__player_container = Frame(self, bg='black')
-        # self.__player_container.grid_rowconfigure(0, weight=1)
-        # self.__player_container.grid_columnconfigure(0, weight=1)
-        # self.__player = Frame(self.__player_container, bg='black')
-        # self.__player_container.grid(column=0, row=0, sticky=NSEW)
-        # self.__wid = self.__player.winfo_id()
-
-        # bus = self.__gst.get_bus()
-        # bus.add_signal_watch()
-        # bus.enable_sync_message_emission()
-        # bus.connect("message", self.__on_eos)
-        # bus.connect("sync-message::element", self.__set_frame_handle)
+        self.__setup_materials()
 
     def __get_current_origami(self):
         tv = self.__treeview
@@ -88,60 +82,33 @@ class CatalogTab(Frame):
 
         return self.__catalog.get_by_name(name)
 
-    def __on_treeview_select(self, event):
-        origami = self.__get_current_origami()
+    def __update_name(self, origami):
         self.__name_entry.delete(0, END)
         self.__name_entry.insert(END, origami.name)
-        print(origami)
-    # def __on_eos(self, bus, message):
-    #     if message.type == Gst.MessageType.EOS:
-    #         self.stop_video()
 
-    # def __set_frame_handle(self, bus, message):
-    #     structure = message.get_structure()
-    #     if structure is not None:
-    #         if structure.get_name() == 'prepare-window-handle':
-    #             message.src.set_window_handle(self.__wid)
+    @staticmethod
+    def __materials_to_selection(materials):
+        i = 1
+        res = []
+        if materials is None:
+            return res
 
-    # def __get_video_handler(self, name):
-    #     def video_handler():
-    #         self.stop_video()
-    #         self.__gst.set_property("uri", f"file:///{name}")
-    #         self.__gst.set_state(Gst.State.PLAYING)
-    #         self.__player.grid(
-    #             column=0,
-    #             row=0,
-    #             sticky=NSEW,
-    #             padx=(1, 1),
-    #             pady=(1, 1)
-    #         )
+        for m in Material:
+            if m.value in materials:
+                res.append(f"I00{i}")
+            i += 1
 
-    #     return video_handler
+        return res
+
+    def __update_materials(self, origami):
+        selection = self.__materials_to_selection(origami.materials)
+        m = self.__materials
+        m.selection_set(selection)
+
+    def __on_treeview_select(self, event):
+        origami = self.__get_current_origami()
+        self.__update_name(origami)
+        self.__update_materials(origami)
 
     def stop_video(self):
         print("stop_video")
-    #     self.__gst.set_state(Gst.State.NULL)
-    #     self.__gst.set_state(Gst.State.READY)
-    #     self.__player.grid_forget()
-
-    # def load_cube_tutorials(self, tutorials):
-    #     idx = 1
-    #     for t in tutorials:
-    #         name = os.path.basename(t)
-    #         b = Button(self, text=name, command=self.__get_video_handler(t))
-    #         b.grid(
-    #             column=0,
-    #             row=idx,
-    #             sticky=EW,
-    #             padx=(3, 3),
-    #             pady=(3, 3)
-    #         )
-    #         idx += 1
-    #     b = Button(self, text=f"▣ {_('Stop')}", command=self.stop_video)
-    #     b.grid(
-    #         column=0,
-    #         row=idx,
-    #         sticky=EW,
-    #         padx=(3, 3),
-    #         pady=(3, 3)
-    #     )

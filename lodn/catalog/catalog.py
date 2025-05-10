@@ -8,6 +8,7 @@ class Catalog(object):
         for f in listdir(path):
             o = Origami(f"{path}/{f}")
             self.__catalog.append(o)
+            print(o)
 
     @property
     def catalog(self):
