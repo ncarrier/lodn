@@ -15,6 +15,7 @@ from tkinter import Frame, ttk, Label, Entry, END, OptionMenu, StringVar
 from tkinter import Listbox, Scrollbar, INSERT
 from lodn.catalog.material import Material
 from lodn.catalog.category import Category
+from lodn.catalog.origami_variables import OrigamiVariables
 from lodn.ui.ttk_scrolled_text import TTKScrolledText
 import gi
 gi.require_version('Gst', '1.0')
@@ -46,6 +47,7 @@ class CatalogTab(Frame):
         self.__default_item = "I001"
         self.__origami = None
 
+        self.__ori_var = OrigamiVariables()
         self.__setup_treeview()
         self.__setup_controls()
 
@@ -67,89 +69,89 @@ class CatalogTab(Frame):
         tv.selection_set(self.__default_item)
 
     def __setup_name(self):
-        self.__name_entry = Entry(self)
+        self.__name_entry = Entry(self, textvariable=self.__ori_var.name)
         self.__name_entry.grid(row=0, column=2, sticky="we", padx=(6, 6),
                                pady=(6, 6))
 
     def __setup_category(self):
-        self.__category_var = var = StringVar(self)
         categories = [c.value for c in Category]
-        self.__category = OptionMenu(self, var, *categories)
+        self.__category = OptionMenu(self, self.__ori_var.category,
+                                     *categories)
         self.__category.grid(row=1, column=2, sticky="we", padx=(6, 6),
                              pady=(6, 6))
 
+    def __set_command_string_var(self, event):
+        self.__ori_var.comment.set(self.__comment.get("1.0", END))
+
     def __setup_comment(self):
         self.__comment = TTKScrolledText(self, height=10)
+        self.__comment.bind('<KeyRelease>', self.__set_command_string_var)
         self.__comment.grid(row=2, column=2, sticky="nswe", padx=(6, 6),
                             pady=(6, 6))
 
     def __setup_paper_size(self):
-        self.__paper_size_var = var = StringVar(self)
         self.__paper_size = ttk.Spinbox(
             self,
             from_=0,
             to=1000,
-            textvariable=var,
+            textvariable=self.__ori_var.paper_size,
             width=3
         )
         self.__paper_size.grid(row=3, column=2, sticky="we", padx=(6, 6),
                                pady=(6, 6))
 
     def __setup_diameter(self):
-        self.__diameter_var = var = StringVar(self)
         self.__diameter = ttk.Spinbox(
             self,
             from_=0,
             to=1000,
-            textvariable=var,
+            textvariable=self.__ori_var.diameter,
             width=3
         )
         self.__diameter.grid(row=4, column=2, sticky="we", padx=(6, 6),
                              pady=(6, 6))
 
     def __setup_height(self):
-        self.__height_var = var = StringVar(self)
         self.__height = ttk.Spinbox(
             self,
             from_=0,
             to=1000,
-            textvariable=var,
+            textvariable=self.__ori_var.height,
             width=3
         )
         self.__height.grid(row=5, column=2, sticky="we", padx=(6, 6),
                            pady=(6, 6))
 
     def __setup_length(self):
-        self.__length_var = var = StringVar(self)
         self.__length = ttk.Spinbox(
             self,
             from_=0,
             to=1000,
-            textvariable=var,
+            textvariable=self.__ori_var.length,
             width=3
         )
         self.__length.grid(row=6, column=2, sticky="we", padx=(6, 6),
                            pady=(6, 6))
 
     def __setup_width(self):
-        self.__width_var = var = StringVar(self)
         self.__width = ttk.Spinbox(
             self,
             from_=0,
             to=1000,
-            textvariable=var,
+            textvariable=self.__ori_var.width,
             width=3
         )
         self.__width.grid(row=7, column=2, sticky="we", padx=(6, 6),
                           pady=(6, 6))
 
     def __setup_materials(self):
-        self.__materials_var = StringVar(
+        materials_list = StringVar(
             value=[m.value for m in list(Material)]
         )
+
         self.__materials = m = Listbox(
             self,
-            listvariable=self.__materials_var,
+            listvariable=materials_list,
             height=5,
             selectmode="multiple"
         )
@@ -160,12 +162,11 @@ class CatalogTab(Frame):
         s.grid(column=3, row=8, sticky="ns")
 
     def __setup_quotation(self):
-        self.__quotation_var = var = StringVar(self)
         self.__quotation = ttk.Spinbox(
             self,
             from_=0,
             to=1000,
-            textvariable=var,
+            textvariable=self.__ori_var.quotation,
             width=3
         )
         self.__quotation.grid(row=9, column=2, sticky="we", padx=(6, 6),
@@ -203,26 +204,27 @@ class CatalogTab(Frame):
         self.__name_entry.insert(END, origami.name)
 
     def __update_category(self, origami):
-        self.__category_var.set(origami.category)
+        self.__ori_var.category.set(origami.category)
 
     def __update_comment(self, origami):
+        self.__ori_var.comment.set(origami.comment)
         self.__comment.delete("1.0", END)
         self.__comment.insert(INSERT, origami.comment)
 
     def __update_diameter(self, origami):
-        self.__diameter_var.set(origami.diameter)
+        self.__ori_var.diameter.set(origami.diameter)
 
     def __update_height(self, origami):
-        self.__height_var.set(origami.height)
+        self.__ori_var.height.set(origami.height)
 
     def __update_length(self, origami):
-        self.__length_var.set(origami.height)
+        self.__ori_var.length.set(origami.length)
 
     def __update_paper_size(self, origami):
-        self.__paper_size_var.set(origami.paper_size)
+        self.__ori_var.paper_size.set(origami.paper_size)
 
     def __update_width(self, origami):
-        self.__width_var.set(origami.paper_size)
+        self.__ori_var.width.set(origami.width)
 
     def __update_materials(self, origami):
         self.__materials.selection_clear(0, 'end')
@@ -233,12 +235,18 @@ class CatalogTab(Frame):
             i += 1
 
     def __update_quotation(self, origami):
-        self.__quotation_var.set(origami.paper_size)
+        self.__ori_var.quotation.set(origami.quotation)
 
     def __on_treeview_select(self, event):
         origami = self.__origami
         if origami is not None:
-            origami.save()
+            i = 0
+            self.__ori_var.materials = []
+            for m in Material:
+                if i in self.__materials.curselection():
+                    self.__ori_var.materials.append(m.value)
+                i += 1
+            origami.save(self.__ori_var)
         origami = self.__get_current_origami()
         self.__update_name(origami)
         self.__update_category(origami)
@@ -250,6 +258,7 @@ class CatalogTab(Frame):
         self.__update_width(origami)
         self.__update_materials(origami)
         self.__update_quotation(origami)
+        self.__origami = origami
 
     def stop_video(self):
         print("stop_video")

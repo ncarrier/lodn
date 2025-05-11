@@ -54,3 +54,12 @@ class Origami:
         return (f"{self.name=} - {self.category=} - {self.comment=} - "
                 f"{self.diameter=} - {self.height=} - {self.length=} - "
                 f"{self.materials=} - {self.quotation=} - {self.width}")
+
+    def save(self, variables):
+        # v = variables
+        # print(f"{v.name.get()=}, {v.category.get()=}, {v.comment.get()=}"
+        #       f", {v.paper_size.get()=}, {v.diameter.get()=}"
+        #       f", {v.height.get()=}, {v.length.get()=}"
+        #       f", {v.width.get()=}, {v.materials=}"
+        #       f", {v.quotation.get()=}")
+        pass

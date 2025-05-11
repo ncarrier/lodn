@@ -13,5 +13,7 @@ class Material(Enum):
 
 if __name__ == "__main__":
     print(Material.KAMI.value)
+    i = 0
     for m in Material:
-        print(m.value.capitalize())
+        print(m.value.capitalize(), i)
+        i += 1
