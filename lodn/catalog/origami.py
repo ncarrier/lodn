@@ -72,6 +72,7 @@ class Origami:
             "materials": v.materials,
             "quotation": v.quotation.get()
         }
+        # TODO if name has changed, move the folder
         dump = json.dumps(json_dict, indent=4)
         with open(self.__json_path, "w") as f:
             f.write(dump)

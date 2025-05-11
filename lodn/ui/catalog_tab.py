@@ -236,8 +236,7 @@ class CatalogTab(Frame):
     def __update_quotation(self, origami):
         self.__ori_var.quotation.set(origami.quotation)
 
-    def __on_treeview_select(self, event):
-        origami = self.__origami
+    def __save(self, origami):
         if origami is not None:
             i = 0
             self.__ori_var.materials = []
@@ -246,6 +245,11 @@ class CatalogTab(Frame):
                     self.__ori_var.materials.append(m.value)
                 i += 1
             origami.save(self.__ori_var)
+
+    def __on_treeview_select(self, event):
+        origami = self.__origami
+        self.__save(origami)
+
         origami = self.__get_current_origami()
         self.__update_name(origami)
         self.__update_category(origami)
@@ -259,5 +263,6 @@ class CatalogTab(Frame):
         self.__update_quotation(origami)
         self.__origami = origami
 
-    def stop_video(self):
-        print("stop_video")
+    def close_catalog(self):
+        print("TODO stop_video")
+        self.__save(self.__origami)

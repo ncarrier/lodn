@@ -71,7 +71,7 @@ class MainWindow(object):
         self.__catalog = catalog = CatalogTab(notebook, self.__catalog)
         catalog.pack(fill=tkinter.BOTH, expand=True)
         catalog.columnconfigure(0, weight=1)
-        self.__register_close_event_observer(catalog.stop_video)
+        self.__register_close_event_observer(catalog.close_catalog)
         notebook.add(catalog, text="catalog")
 
         # self.__settings = settings = SettingsTab(
