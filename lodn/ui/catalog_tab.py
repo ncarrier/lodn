@@ -12,15 +12,16 @@
 # You should have received a copy of the GNU General Public License along with
 # lodn. If not, see <https://www.gnu.org/licenses/>.
 from tkinter import Frame, ttk, Label, Entry, END, OptionMenu, StringVar
-from tkinter import Listbox, Scrollbar
+from tkinter import Listbox, Scrollbar, INSERT
+from lodn.catalog.material import Material
+from lodn.catalog.category import Category
+from lodn.ui.ttk_scrolled_text import TTKScrolledText
 import gi
 gi.require_version('Gst', '1.0')
 from gi.repository import Gst, GObject  # noqa E402
 
 gi.require_version('GstVideo', '1.0')
 from gi.repository import GstVideo  # noqa E402,F401
-from lodn.catalog.material import Material  # noqa E402
-from lodn.catalog.category import Category  # noqa E402
 
 
 class CatalogTab(Frame):
@@ -75,6 +76,11 @@ class CatalogTab(Frame):
         self.__category = OptionMenu(self, var, *categories)
         self.__category.grid(row=1, column=2, sticky="we", padx=(6, 6),
                              pady=(6, 6))
+
+    def __setup_comment(self):
+        self.__comment = TTKScrolledText(self, height=10)
+        self.__comment.grid(row=2, column=2, sticky="nswe", padx=(6, 6),
+                            pady=(6, 6))
 
     def __setup_paper_size(self):
         self.__paper_size_var = var = StringVar(self)
@@ -174,6 +180,7 @@ class CatalogTab(Frame):
 
         self.__setup_name()
         self.__setup_category()
+        self.__setup_comment()
         self.__setup_paper_size()
         self.__setup_diameter()
         self.__setup_height()
@@ -196,6 +203,10 @@ class CatalogTab(Frame):
 
     def __update_category(self, origami):
         self.__category_var.set(origami.category)
+
+    def __update_comment(self, origami):
+        self.__comment.delete("1.0", END)
+        self.__comment.insert(INSERT, origami.comment)
 
     def __update_diameter(self, origami):
         self.__diameter_var.set(origami.diameter)
@@ -228,6 +239,7 @@ class CatalogTab(Frame):
         origami = self.__get_current_origami()
         self.__update_name(origami)
         self.__update_category(origami)
+        self.__update_comment(origami)
         self.__update_paper_size(origami)
         self.__update_diameter(origami)
         self.__update_height(origami)
