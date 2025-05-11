@@ -44,6 +44,7 @@ class CatalogTab(Frame):
         self.__catalog = catalog
         self.__parent = parent
         self.__default_item = "I001"
+        self.__origami = None
 
         self.__setup_treeview()
         self.__setup_controls()
@@ -235,7 +236,9 @@ class CatalogTab(Frame):
         self.__quotation_var.set(origami.paper_size)
 
     def __on_treeview_select(self, event):
-        # TODO here save the previous item if any
+        origami = self.__origami
+        if origami is not None:
+            origami.save()
         origami = self.__get_current_origami()
         self.__update_name(origami)
         self.__update_category(origami)

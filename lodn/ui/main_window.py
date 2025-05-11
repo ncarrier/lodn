@@ -33,8 +33,8 @@ class MainWindow(object):
         Constructor
         '''
         self.__tree_structure = tree_structure
-        self.__catalog = Catalog(tree_structure)
         self.__root = Tk(className=appname)
+        self.__catalog = Catalog(tree_structure)
         self.__loop = GObject.MainLoop()
         GObject.idle_add(self.__refresh)
         self.__close_event_observers = []
