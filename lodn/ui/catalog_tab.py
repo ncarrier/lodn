@@ -12,6 +12,7 @@
 # You should have received a copy of the GNU General Public License along with
 # lodn. If not, see <https://www.gnu.org/licenses/>.
 from tkinter import Frame, ttk, Label, Entry, END, OptionMenu, StringVar
+from tkinter import Listbox, Scrollbar
 import gi
 gi.require_version('Gst', '1.0')
 from gi.repository import Gst, GObject  # noqa E402
@@ -136,11 +137,20 @@ class CatalogTab(Frame):
                           pady=(6, 6))
 
     def __setup_materials(self):
-        self.__materials = materials = ttk.Treeview(self, show="",
-                                                    columns=("name"))
-        materials.grid(column=2, row=8, sticky="nsew")
-        for c in Material:
-            materials.insert("", END, values=(c.value,))
+        self.__materials_var = StringVar(
+            value=[m.value for m in list(Material)]
+        )
+        self.__materials = m = Listbox(
+            self,
+            listvariable=self.__materials_var,
+            height=5,
+            selectmode="multiple"
+        )
+        s = Scrollbar(self, orient="vertical")
+        s.config(command=m.yview)
+        m.config(yscrollcommand=s.set)
+        m.grid(column=2, row=8, sticky="nsew")
+        s.grid(column=3, row=8, sticky="ns")
 
     def __setup_quotation(self):
         self.__quotation_var = var = StringVar(self)
@@ -202,22 +212,13 @@ class CatalogTab(Frame):
     def __update_width(self, origami):
         self.__width_var.set(origami.paper_size)
 
-    @staticmethod
-    def __materials_to_selection(materials):
-        i = 1
-        res = []
-
-        for m in Material:
-            if m.value in materials:
-                res.append(f"I00{i}")
-            i += 1
-
-        return res
-
     def __update_materials(self, origami):
-        selection = self.__materials_to_selection(origami.materials)
-        m = self.__materials
-        m.selection_set(selection)
+        self.__materials.selection_clear(0, 'end')
+        i = 0
+        for m in Material:
+            if m.value in origami.materials:
+                self.__materials.selection_set(i)
+            i += 1
 
     def __update_quotation(self, origami):
         self.__quotation_var.set(origami.paper_size)
