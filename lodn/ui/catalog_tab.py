@@ -99,6 +99,30 @@ class CatalogTab(Frame):
         self.__diameter.grid(row=4, column=2, sticky="we", padx=(6, 6),
                              pady=(6, 6))
 
+    def __setup_height(self):
+        self.__height_var = var = StringVar(self)
+        self.__height = ttk.Spinbox(
+            self,
+            from_=0,
+            to=1000,
+            textvariable=var,
+            width=3
+        )
+        self.__height.grid(row=5, column=2, sticky="we", padx=(6, 6),
+                           pady=(6, 6))
+
+    def __setup_length(self):
+        self.__length_var = var = StringVar(self)
+        self.__length = ttk.Spinbox(
+            self,
+            from_=0,
+            to=1000,
+            textvariable=var,
+            width=3
+        )
+        self.__length.grid(row=6, column=2, sticky="we", padx=(6, 6),
+                           pady=(6, 6))
+
     def __setup_materials(self):
         self.__materials = materials = ttk.Treeview(self, show="",
                                                     columns=("name"))
@@ -118,6 +142,8 @@ class CatalogTab(Frame):
         self.__setup_category()
         self.__setup_paper_size()
         self.__setup_diameter()
+        self.__setup_height()
+        self.__setup_length()
         self.__setup_materials()
 
     def __get_current_origami(self):
@@ -137,6 +163,12 @@ class CatalogTab(Frame):
 
     def __update_diameter(self, origami):
         self.__diameter_var.set(origami.diameter)
+
+    def __update_height(self, origami):
+        self.__height_var.set(origami.height)
+
+    def __update_length(self, origami):
+        self.__length_var.set(origami.height)
 
     def __update_paper_size(self, origami):
         self.__paper_size_var.set(origami.paper_size)
@@ -165,6 +197,8 @@ class CatalogTab(Frame):
         self.__update_category(origami)
         self.__update_paper_size(origami)
         self.__update_diameter(origami)
+        self.__update_height(origami)
+        self.__update_length(origami)
         self.__update_materials(origami)
 
     def stop_video(self):
