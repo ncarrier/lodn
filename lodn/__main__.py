@@ -17,18 +17,18 @@ from .ui.main_window import MainWindow
 
 
 def usage(status):
-    print("Usage: lodn [/path/to/tree/structure]")
+    print("Usage: lodn /path/to/catalog")
     sys.exit(status)
 
 
 def main():
-    if len(sys.argv) not in [1, 2]:
+    if len(sys.argv) != 2:
         usage(1)
 
-    if len(sys.argv) == 2 and sys.argv[1] in ["-h", "--help", "-?"]:
+    if sys.argv[1] in ["-h", "--help", "-?"]:
         usage(0)
 
-    window = MainWindow(None if len(sys.argv) == 1 else sys.argv[1])
+    window = MainWindow(sys.argv[1])
 
     window.loop()
 
