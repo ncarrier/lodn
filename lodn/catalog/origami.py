@@ -38,6 +38,10 @@ class Origami:
         return self.__meta.get("materials", [])
 
     @property
+    def paper_size(self):
+        return self.__meta.get("paper_size", 0)
+
+    @property
     def quotation(self):
         return self.__meta.get("quotation", 0)
 

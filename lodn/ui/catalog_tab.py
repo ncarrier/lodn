@@ -23,8 +23,18 @@ from lodn.catalog.category import Category  # noqa E402
 
 
 class CatalogTab(Frame):
-    fields = ["name", "category", "comment", "diameter (mm)", "height (mm)",
-              "length (mm)", "materials", "quotation (min)", "width (mm)"]
+    fields = [
+        "name",
+        "category",
+        "comment",
+        "paper size (mm)",
+        "diameter (mm)",
+        "height (mm)",
+        "length (mm)",
+        "width (mm)",
+        "materials",
+        "quotation (min)"
+    ]
 
     def __init__(self, parent, catalog):
         Frame.__init__(self, parent)
@@ -65,10 +75,34 @@ class CatalogTab(Frame):
         self.__category.grid(row=1, column=2, sticky="we", padx=(6, 6),
                              pady=(6, 6))
 
+    def __setup_paper_size(self):
+        self.__paper_size_var = var = StringVar(self)
+        self.__paper_size = ttk.Spinbox(
+            self,
+            from_=0,
+            to=1000,
+            textvariable=var,
+            width=3
+        )
+        self.__paper_size.grid(row=3, column=2, sticky="we", padx=(6, 6),
+                               pady=(6, 6))
+
+    def __setup_diameter(self):
+        self.__diameter_var = var = StringVar(self)
+        self.__diameter = ttk.Spinbox(
+            self,
+            from_=0,
+            to=1000,
+            textvariable=var,
+            width=3
+        )
+        self.__diameter.grid(row=4, column=2, sticky="we", padx=(6, 6),
+                             pady=(6, 6))
+
     def __setup_materials(self):
         self.__materials = materials = ttk.Treeview(self, show="",
                                                     columns=("name"))
-        materials.grid(column=2, row=6, sticky="nsew")
+        materials.grid(column=2, row=8, sticky="nsew")
         for c in Material:
             materials.insert("", END, values=(c.value,))
 
@@ -82,6 +116,8 @@ class CatalogTab(Frame):
 
         self.__setup_name()
         self.__setup_category()
+        self.__setup_paper_size()
+        self.__setup_diameter()
         self.__setup_materials()
 
     def __get_current_origami(self):
@@ -98,6 +134,12 @@ class CatalogTab(Frame):
 
     def __update_category(self, origami):
         self.__category_var.set(origami.category)
+
+    def __update_diameter(self, origami):
+        self.__diameter_var.set(origami.diameter)
+
+    def __update_paper_size(self, origami):
+        self.__paper_size_var.set(origami.paper_size)
 
     @staticmethod
     def __materials_to_selection(materials):
@@ -121,6 +163,8 @@ class CatalogTab(Frame):
         origami = self.__get_current_origami()
         self.__update_name(origami)
         self.__update_category(origami)
+        self.__update_paper_size(origami)
+        self.__update_diameter(origami)
         self.__update_materials(origami)
 
     def stop_video(self):
