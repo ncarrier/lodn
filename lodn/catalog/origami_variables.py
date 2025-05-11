@@ -11,5 +11,5 @@ class OrigamiVariables(object):
         self.height = IntVar()
         self.length = IntVar()
         self.width = IntVar()
-        self.materials = ()
+        self.materials = []
         self.quotation = IntVar()

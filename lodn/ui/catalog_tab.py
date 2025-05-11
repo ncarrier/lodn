@@ -152,7 +152,7 @@ class CatalogTab(Frame):
         self.__materials = m = Listbox(
             self,
             listvariable=materials_list,
-            height=5,
+            height=7,
             selectmode="multiple"
         )
         s = Scrollbar(self, orient="vertical")
@@ -173,7 +173,6 @@ class CatalogTab(Frame):
                               pady=(6, 6))
 
     def __setup_controls(self):
-        # frame = Frame
         i = 0
         for f in CatalogTab.fields:
             label = Label(self, text=f)

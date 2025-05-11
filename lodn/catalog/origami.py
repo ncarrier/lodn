@@ -5,8 +5,12 @@ import os
 class Origami:
     def __init__(self, path):
         self.__path = path
-        with open(f"{path}/meta.json") as f:
-            self.__meta = json.load(f)
+        self.__json_path = f"{path}/meta.json"
+        with open(self.__json_path) as f:
+            try:
+                self.__meta = json.load(f)
+            except json.decoder.JSONDecodeError:
+                self.__meta = json.loads("{}")
 
     @property
     def name(self):
@@ -56,10 +60,19 @@ class Origami:
                 f"{self.materials=} - {self.quotation=} - {self.width}")
 
     def save(self, variables):
-        # v = variables
-        # print(f"{v.name.get()=}, {v.category.get()=}, {v.comment.get()=}"
-        #       f", {v.paper_size.get()=}, {v.diameter.get()=}"
-        #       f", {v.height.get()=}, {v.length.get()=}"
-        #       f", {v.width.get()=}, {v.materials=}"
-        #       f", {v.quotation.get()=}")
-        pass
+        v = variables
+        json_dict = {
+            "category": v.category.get(),
+            "comment": v.comment.get(),
+            "diameter": v.diameter.get(),
+            "paper_size": v.paper_size.get(),
+            "height": v.height.get(),
+            "length": v.length.get(),
+            "width": v.width.get(),
+            "materials": v.materials,
+            "quotation": v.quotation.get()
+        }
+        dump = json.dumps(json_dict, indent=4)
+        with open(self.__json_path, "w") as f:
+            f.write(dump)
+        self.__meta = json.loads(dump)
