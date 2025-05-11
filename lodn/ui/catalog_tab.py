@@ -123,12 +123,36 @@ class CatalogTab(Frame):
         self.__length.grid(row=6, column=2, sticky="we", padx=(6, 6),
                            pady=(6, 6))
 
+    def __setup_width(self):
+        self.__width_var = var = StringVar(self)
+        self.__width = ttk.Spinbox(
+            self,
+            from_=0,
+            to=1000,
+            textvariable=var,
+            width=3
+        )
+        self.__width.grid(row=7, column=2, sticky="we", padx=(6, 6),
+                          pady=(6, 6))
+
     def __setup_materials(self):
         self.__materials = materials = ttk.Treeview(self, show="",
                                                     columns=("name"))
         materials.grid(column=2, row=8, sticky="nsew")
         for c in Material:
             materials.insert("", END, values=(c.value,))
+
+    def __setup_quotation(self):
+        self.__quotation_var = var = StringVar(self)
+        self.__quotation = ttk.Spinbox(
+            self,
+            from_=0,
+            to=1000,
+            textvariable=var,
+            width=3
+        )
+        self.__quotation.grid(row=9, column=2, sticky="we", padx=(6, 6),
+                              pady=(6, 6))
 
     def __setup_controls(self):
         # frame = Frame
@@ -144,7 +168,9 @@ class CatalogTab(Frame):
         self.__setup_diameter()
         self.__setup_height()
         self.__setup_length()
+        self.__setup_width()
         self.__setup_materials()
+        self.__setup_quotation()
 
     def __get_current_origami(self):
         tv = self.__treeview
@@ -173,6 +199,9 @@ class CatalogTab(Frame):
     def __update_paper_size(self, origami):
         self.__paper_size_var.set(origami.paper_size)
 
+    def __update_width(self, origami):
+        self.__width_var.set(origami.paper_size)
+
     @staticmethod
     def __materials_to_selection(materials):
         i = 1
@@ -190,6 +219,9 @@ class CatalogTab(Frame):
         m = self.__materials
         m.selection_set(selection)
 
+    def __update_quotation(self, origami):
+        self.__quotation_var.set(origami.paper_size)
+
     def __on_treeview_select(self, event):
         # TODO here save the previous item if any
         origami = self.__get_current_origami()
@@ -199,7 +231,9 @@ class CatalogTab(Frame):
         self.__update_diameter(origami)
         self.__update_height(origami)
         self.__update_length(origami)
+        self.__update_width(origami)
         self.__update_materials(origami)
+        self.__update_quotation(origami)
 
     def stop_video(self):
         print("stop_video")
