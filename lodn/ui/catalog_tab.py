@@ -23,8 +23,8 @@ from lodn.catalog.category import Category  # noqa E402
 
 
 class CatalogTab(Frame):
-    fields = ["name", "category", "comment", "diameter", "height",
-              "length", "materials", "quotation", "width"]
+    fields = ["name", "category", "comment", "diameter (mm)", "height (mm)",
+              "length (mm)", "materials", "quotation (min)", "width (mm)"]
 
     def __init__(self, parent, catalog):
         Frame.__init__(self, parent)
