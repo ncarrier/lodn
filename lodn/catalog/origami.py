@@ -4,6 +4,9 @@ from PIL import Image, ImageTk
 
 
 class Origami:
+    IMG_WIDTH = 300
+    IMG_HEIGHT = 200
+
     def __init__(self, path):
         self.__path = path
         self.__json_path = f"{path}/meta.json"
@@ -12,8 +15,19 @@ class Origami:
                 self.__meta = json.load(f)
             except json.decoder.JSONDecodeError:
                 self.__meta = json.loads("{}")
-        image = Image.open(f"{path}/photo.png")
-        self.__photo = ImageTk.PhotoImage(image)
+        self.__photo_path = f"{path}/photo.png"
+        self.__load_photo()
+
+    def __load_photo(self):
+        try:
+            image = Image.open(self.__photo_path)
+        except FileNotFoundError:
+            image = Image.open(f"{os.path.dirname(__file__)}/no_photo.png")
+
+        width, height = Origami.get_resized_dimensions(*image.size)
+        print(image.size, width, height)
+        resized_image = image.resize((width, height))
+        self.__photo = ImageTk.PhotoImage(resized_image)
 
     @property
     def name(self):
@@ -84,3 +98,32 @@ class Origami:
         with open(self.__json_path, "w") as f:
             f.write(dump)
         self.__meta = json.loads(dump)
+
+    @staticmethod
+    def get_resized_dimensions(width, height):
+        """
+        Compute the new dimensions of the image, to fit in the label's size,
+        while keeping the original ratio
+        """
+        img_ratio = height / width
+        cont_ratio = Origami.IMG_HEIGHT / Origami.IMG_WIDTH
+        print(img_ratio, cont_ratio)
+        if img_ratio > cont_ratio:
+            h2 = Origami.IMG_HEIGHT
+            w2 = h2 / img_ratio
+        else:
+            w2 = Origami.IMG_WIDTH
+            h2 = w2 * img_ratio
+
+        return int(w2), int(h2)
+
+
+if __name__ == "__main__":
+    tuples = [
+        (300, 200),
+        (600, 400),
+        (600, 300),
+        (200, 400)
+    ]
+    for t in tuples:
+        print(t, Origami.get_resized_dimensions(*t))

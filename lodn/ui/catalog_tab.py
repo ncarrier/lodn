@@ -13,7 +13,6 @@
 # lodn. If not, see <https://www.gnu.org/licenses/>.
 from tkinter import Frame, ttk, Label, Entry, END, OptionMenu, StringVar
 from tkinter import Listbox, Scrollbar, INSERT
-from PIL import Image, ImageTk
 from lodn.catalog.material import Material
 from lodn.catalog.category import Category
 from lodn.catalog.origami_variables import OrigamiVariables
@@ -50,6 +49,7 @@ class CatalogTab(Frame):
         self.__ori_var = OrigamiVariables()
         self.__setup_treeview()
         self.__setup_controls()
+        self.__setup_photo()
 
     def __setup_treeview(self):
         self.__treeview = tv = ttk.Treeview(
@@ -173,13 +173,9 @@ class CatalogTab(Frame):
                               pady=(6, 6))
 
     def __setup_photo(self):
-        image = Image.open("/home/nicolas/Workspace/lodn/no_photo.png")
-        resized_image = image.resize((300, 200))
-        self.__image = ImageTk.PhotoImage(resized_image)
-        self.__photo = ttk.Label(self, image=self.__image)
+        self.__photo = ttk.Label(self)
         self.__photo.grid(row=1, column=3, sticky="nswe", padx=(6, 6),
                           pady=(6, 6), rowspan=3)
-        print("here")
 
     def __setup_controls(self):
         i = 0
@@ -198,7 +194,6 @@ class CatalogTab(Frame):
         self.__setup_width()
         self.__setup_materials()
         self.__setup_quotation()
-        self.__setup_photo()
 
     def __get_current_origami(self):
         tv = self.__treeview
@@ -247,7 +242,7 @@ class CatalogTab(Frame):
         self.__ori_var.quotation.set(origami.quotation)
 
     def __update_photo(self, origami):
-        self.__photo.image = origami.photo
+        self.__photo.config(image=origami.photo)
 
     def __save(self, origami):
         if origami is not None:
