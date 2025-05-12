@@ -2,12 +2,12 @@ from enum import Enum
 
 
 class Material(Enum):
-    BRISTOL = "bristol"
     FABRIC_NAPKIN = "fabric napkin"
-    KAMI = "kami"
-    KRAFT = "kraft"
     PAPER_NAPKIN = "paper napkin"
-    SILK = "silk"
+    KAMI = "kami"
+    BRISTOL = "bristol"
+    KRAFT = "kraft"
+    SILK_PAPER = "silk paper"
     SPONGE_NAPKIN = "sponge napkin"
 
 
