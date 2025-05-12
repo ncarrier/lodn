@@ -13,6 +13,7 @@
 # lodn. If not, see <https://www.gnu.org/licenses/>.
 from tkinter import Frame, ttk, Label, Entry, END, OptionMenu, StringVar
 from tkinter import Listbox, Scrollbar, INSERT
+from PIL import Image, ImageTk
 from lodn.catalog.material import Material
 from lodn.catalog.category import Category
 from lodn.catalog.origami_variables import OrigamiVariables
@@ -41,7 +42,6 @@ class CatalogTab(Frame):
 
     def __init__(self, parent, catalog):
         Frame.__init__(self, parent)
-        self.grid_rowconfigure(0, weight=1)
         self.__catalog = catalog
         self.__parent = parent
         self.__default_item = "I001"
@@ -152,14 +152,14 @@ class CatalogTab(Frame):
         self.__materials = m = Listbox(
             self,
             listvariable=materials_list,
-            height=7,
+            height=5,
             selectmode="multiple"
         )
         s = Scrollbar(self, orient="vertical")
         s.config(command=m.yview)
         m.config(yscrollcommand=s.set)
         m.grid(column=2, row=8, sticky="nsew")
-        s.grid(column=3, row=8, sticky="ns")
+        s.grid(column=3, row=8, sticky="nsw")
 
     def __setup_quotation(self):
         self.__quotation = ttk.Spinbox(
@@ -171,6 +171,15 @@ class CatalogTab(Frame):
         )
         self.__quotation.grid(row=9, column=2, sticky="we", padx=(6, 6),
                               pady=(6, 6))
+
+    def __setup_photo(self):
+        image = Image.open("/home/nicolas/Workspace/lodn/no_photo.png")
+        resized_image = image.resize((300, 200))
+        self.__image = ImageTk.PhotoImage(resized_image)
+        self.__photo = ttk.Label(self, image=self.__image)
+        self.__photo.grid(row=1, column=3, sticky="nswe", padx=(6, 6),
+                          pady=(6, 6), rowspan=3)
+        print("here")
 
     def __setup_controls(self):
         i = 0
@@ -189,6 +198,7 @@ class CatalogTab(Frame):
         self.__setup_width()
         self.__setup_materials()
         self.__setup_quotation()
+        self.__setup_photo()
 
     def __get_current_origami(self):
         tv = self.__treeview
@@ -236,6 +246,9 @@ class CatalogTab(Frame):
     def __update_quotation(self, origami):
         self.__ori_var.quotation.set(origami.quotation)
 
+    def __update_photo(self, origami):
+        self.__photo.image = origami.photo
+
     def __save(self, origami):
         if origami is not None:
             i = 0
@@ -261,6 +274,7 @@ class CatalogTab(Frame):
         self.__update_width(origami)
         self.__update_materials(origami)
         self.__update_quotation(origami)
+        self.__update_photo(origami)
         self.__origami = origami
 
     def close_catalog(self):

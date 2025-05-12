@@ -1,5 +1,6 @@
 import json
 import os
+from PIL import Image, ImageTk
 
 
 class Origami:
@@ -11,6 +12,8 @@ class Origami:
                 self.__meta = json.load(f)
             except json.decoder.JSONDecodeError:
                 self.__meta = json.loads("{}")
+        image = Image.open(f"{path}/photo.png")
+        self.__photo = ImageTk.PhotoImage(image)
 
     @property
     def name(self):
@@ -53,6 +56,10 @@ class Origami:
     def width(self):
         return self.__meta.get("width", 0)
     # end of properties from the meta.jon file
+
+    @property
+    def photo(self):
+        return self.__photo
 
     def __str__(self):
         return (f"{self.name=} - {self.category=} - {self.comment=} - "

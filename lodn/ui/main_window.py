@@ -73,15 +73,6 @@ class MainWindow(object):
         catalog.columnconfigure(0, weight=1)
         self.__register_close_event_observer(catalog.close_catalog)
         notebook.add(catalog, text="catalog")
-
-        # self.__settings = settings = SettingsTab(
-        #     notebook,
-        #     lambda a, b, c: self.__save_scheduler()
-        # )
-        # settings.pack(fill=tkinter.BOTH, expand=True)
-        # settings.columnconfigure(0, weight=1)
-        # notebook.add(settings, text=_("Parameters"))
-
         notebook.pack(expand=1, fill="both")
 
     def __refresh(self):
