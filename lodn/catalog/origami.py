@@ -9,15 +9,18 @@ class Origami:
     IMG_HEIGHT = 200
 
     def __init__(self, path):
-        self.__path = path
-        self.__json_path = f"{path}/meta.json"
+        self.__setup_paths(path)
         with open(self.__json_path) as f:
             try:
                 self.__meta = json.load(f)
             except json.decoder.JSONDecodeError:
                 self.__meta = json.loads("{}")
-        self.__photo_path = f"{path}/photo.png"
         self.__load_photo()
+
+    def __setup_paths(self, path):
+        self.__path = path
+        self.__json_path = f"{path}/meta.json"
+        self.__photo_path = f"{path}/photo.png"
 
     def __load_photo(self):
         try:
@@ -87,6 +90,12 @@ class Origami:
 
     def save(self, variables):
         v = variables
+        new_name = v.name.get()
+        if new_name != self.name:
+            src = self.__path
+            dst = f"{os.path.dirname(self.__path)}/{new_name}"
+            shutil.move(src, dst)
+            self.__setup_paths(dst)
         json_dict = {
             "category": v.category.get(),
             "comment": v.comment.get(),
@@ -98,7 +107,6 @@ class Origami:
             "materials": v.materials,
             "quotation": v.quotation.get()
         }
-        # TODO if name has changed, move the folder
         dump = json.dumps(json_dict, indent=4)
         with open(self.__json_path, "w") as f:
             f.write(dump)
