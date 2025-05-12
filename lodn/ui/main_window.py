@@ -65,9 +65,10 @@ class MainWindow(object):
             padx=(6, 6),
             pady=(6, 6)
         )
-        self.__setup_tabs(notebook)
+        self.__setup_tabs()
 
-    def __setup_tabs(self, notebook):
+    def __setup_tabs(self):
+        notebook = self.__notebook
         self.__catalog = catalog = CatalogTab(notebook, self.__catalog)
         catalog.pack(fill=tkinter.BOTH, expand=True)
         catalog.columnconfigure(0, weight=1)
