@@ -1,6 +1,7 @@
 import json
 import os
 import shutil
+from glob import glob
 from PIL import Image, ImageTk
 
 
@@ -10,17 +11,22 @@ class Origami:
 
     def __init__(self, path):
         self.__setup_paths(path)
-        with open(self.__json_path) as f:
-            try:
-                self.__meta = json.load(f)
-            except json.decoder.JSONDecodeError:
-                self.__meta = json.loads("{}")
+        self.__meta = json.loads("{}")
+        try:
+            with open(self.__json_path) as f:
+                try:
+                    self.__meta = json.load(f)
+                except json.decoder.JSONDecodeError:
+                    pass
+        except FileNotFoundError:
+            pass
         self.__load_photo()
 
     def __setup_paths(self, path):
         self.__path = path
         self.__json_path = f"{path}/meta.json"
         self.__photo_path = f"{path}/photo.png"
+        self.__instructions_glob = f"{path}/instructions.*"
 
     def __load_photo(self):
         try:
@@ -77,6 +83,17 @@ class Origami:
     @property
     def photo(self):
         return self.__photo
+
+    @property
+    def has_instructions(self):
+        return len(glob(self.__instructions_glob)) != 0
+
+    @property
+    def instructions(self):
+        if not self.has_instructions:
+            return None
+
+        return glob(self.__instructions_glob)[0]
 
     @photo.setter
     def photo(self, path):

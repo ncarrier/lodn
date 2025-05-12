@@ -18,6 +18,7 @@ from lodn.catalog.material import Material
 from lodn.catalog.category import Category
 from lodn.catalog.origami_variables import OrigamiVariables
 from lodn.ui.ttk_scrolled_text import TTKScrolledText
+import subprocess
 import gi
 gi.require_version('Gst', '1.0')
 from gi.repository import Gst, GObject  # noqa E402
@@ -51,6 +52,7 @@ class CatalogTab(Frame):
         self.__setup_treeview()
         self.__setup_controls()
         self.__setup_photo()
+        self.__setup_instructions()
 
     def __setup_treeview(self):
         self.__treeview = tv = ttk.Treeview(
@@ -173,20 +175,34 @@ class CatalogTab(Frame):
         self.__quotation.grid(row=9, column=2, sticky="we", padx=(6, 6),
                               pady=(6, 6))
 
-    def photo_on_clicked(self, event):
+    def __photo_on_clicked(self, event):
         photo_path = askopenfilename(
             parent=self,
             title="Choose Origami photo",
             filetypes=[("png image", "*.png")]
         )
+        if not photo_path:
+            return
+
         self.__origami.photo = photo_path
         self.__update_photo(self.__origami)
 
     def __setup_photo(self):
         self.__photo = photo = ttk.Label(self, cursor="hand2")
-        photo.grid(row=1, column=3, sticky="nswe", padx=(6, 6), pady=(6, 6),
+        photo.grid(row=0, column=3, sticky="nswe", padx=(6, 6), pady=(6, 6),
                    rowspan=3)
-        photo.bind("<Button-1>", self.photo_on_clicked)
+        photo.bind("<Button-1>", self.__photo_on_clicked)
+
+    def __instr_on_clicked(self, event):
+        instructions = self.__origami.instructions
+        if instructions is not None:
+            subprocess.Popen(["xdg-open", instructions])
+
+    def __setup_instructions(self):
+        self.__instructions = instr = ttk.Label(self, cursor="hand2")
+        instr.grid(row=3, column=3, sticky="nswe", padx=(6, 6), pady=(6, 6),
+                   rowspan=1)
+        instr.bind("<Button-1>", self.__instr_on_clicked)
 
     def __setup_controls(self):
         i = 0
@@ -255,6 +271,12 @@ class CatalogTab(Frame):
     def __update_photo(self, origami):
         self.__photo.config(image=origami.photo)
 
+    def __update_instructions(self, origami):
+        if origami.has_instructions:
+            self.__instructions.config(text="instructions are present")
+        else:
+            self.__instructions.config(text="no instructions available")
+
     def __save(self, origami):
         i = 0
         self.__ori_var.materials = []
@@ -284,6 +306,7 @@ class CatalogTab(Frame):
         self.__update_materials(origami)
         self.__update_quotation(origami)
         self.__update_photo(origami)
+        self.__update_instructions(origami)
 
         self.__origami = origami
         self.__previous_selected_item = tv.selection()[0]
