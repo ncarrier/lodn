@@ -19,3 +19,6 @@ class Catalog(object):
                 return o
 
         return None
+
+    def export(self, path):
+        print("exporting")  # TODO
