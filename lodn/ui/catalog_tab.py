@@ -12,6 +12,7 @@
 # You should have received a copy of the GNU General Public License along with
 # lodn. If not, see <https://www.gnu.org/licenses/>.
 from tkinter import Frame, ttk, Label, Entry, END, OptionMenu, StringVar
+from tkinter.filedialog import askopenfilename
 from tkinter import Listbox, Scrollbar, INSERT
 from lodn.catalog.material import Material
 from lodn.catalog.category import Category
@@ -172,10 +173,19 @@ class CatalogTab(Frame):
         self.__quotation.grid(row=9, column=2, sticky="we", padx=(6, 6),
                               pady=(6, 6))
 
+    def photo_on_clicked(self, event):
+        photo_path = askopenfilename(
+            parent=self,
+            title="Choose Origami photo",
+            filetypes=[("png image", "*.png")]
+        )
+        print(photo_path)
+
     def __setup_photo(self):
-        self.__photo = ttk.Label(self)
-        self.__photo.grid(row=1, column=3, sticky="nswe", padx=(6, 6),
-                          pady=(6, 6), rowspan=3)
+        self.__photo = photo = ttk.Label(self, cursor="hand2")
+        photo.grid(row=1, column=3, sticky="nswe", padx=(6, 6), pady=(6, 6),
+                   rowspan=3)
+        photo.bind("<Button-1>", self.photo_on_clicked)
 
     def __setup_controls(self):
         i = 0
