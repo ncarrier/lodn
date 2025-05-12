@@ -21,11 +21,12 @@ python -m lodn chemin_vers_le_dossier_du_catalogue
 
 ## Roadmap
 
-1. enregistrer les données, meta, video et photo
-2. génération du site web
-3. création d'un devis
-3. création d'une facture
-4. filtrage par catégorie et par matériaux
-5. saisie d'un nouvel origami
-6. création d'un nouveau matériau
-7. création d'une nouvelle catégorie
+* enregistrer les données, meta, video et photo
+* génération du site web
+* création d'un devis
+* création d'une facture
+* filtrage par catégorie et par matériaux
+* possibilité de lancer la vidéo dans le lecteur par défaut
+* saisie d'un nouvel origami
+* création d'un nouveau matériau
+* création d'une nouvelle catégorie
