@@ -179,7 +179,8 @@ class CatalogTab(Frame):
             title="Choose Origami photo",
             filetypes=[("png image", "*.png")]
         )
-        print(photo_path)
+        self.__origami.photo = photo_path
+        self.__update_photo(self.__origami)
 
     def __setup_photo(self):
         self.__photo = photo = ttk.Label(self, cursor="hand2")

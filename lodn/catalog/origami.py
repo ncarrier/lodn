@@ -1,5 +1,6 @@
 import json
 import os
+import shutil
 from PIL import Image, ImageTk
 
 
@@ -25,7 +26,6 @@ class Origami:
             image = Image.open(f"{os.path.dirname(__file__)}/no_photo.png")
 
         width, height = Origami.get_resized_dimensions(*image.size)
-        print(image.size, width, height)
         resized_image = image.resize((width, height))
         self.__photo = ImageTk.PhotoImage(resized_image)
 
@@ -75,6 +75,11 @@ class Origami:
     def photo(self):
         return self.__photo
 
+    @photo.setter
+    def photo(self, path):
+        shutil.copyfile(path, self.__photo_path)
+        self.__load_photo()
+
     def __str__(self):
         return (f"{self.name=} - {self.category=} - {self.comment=} - "
                 f"{self.diameter=} - {self.height=} - {self.length=} - "
@@ -107,7 +112,6 @@ class Origami:
         """
         img_ratio = height / width
         cont_ratio = Origami.IMG_HEIGHT / Origami.IMG_WIDTH
-        print(img_ratio, cont_ratio)
         if img_ratio > cont_ratio:
             h2 = Origami.IMG_HEIGHT
             w2 = h2 / img_ratio
