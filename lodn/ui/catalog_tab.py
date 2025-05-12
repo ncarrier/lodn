@@ -256,18 +256,21 @@ class CatalogTab(Frame):
         self.__photo.config(image=origami.photo)
 
     def __save(self, origami):
-        if origami is not None:
-            i = 0
-            self.__ori_var.materials = []
-            for m in Material:
-                if i in self.__materials.curselection():
-                    self.__ori_var.materials.append(m.value)
-                i += 1
-            origami.save(self.__ori_var)
+        i = 0
+        self.__ori_var.materials = []
+        for m in Material:
+            if i in self.__materials.curselection():
+                self.__ori_var.materials.append(m.value)
+            i += 1
+        origami.save(self.__ori_var)
 
     def __on_treeview_select(self, event):
+        tv = self.__treeview
         origami = self.__origami
-        self.__save(origami)
+        if origami is not None:
+            self.__save(origami)
+            # update the name of the previous origami in the treeview too.
+            tv.item(self.__previous_selected_item, values=(origami.name,))
 
         origami = self.__get_current_origami()
         self.__update_name(origami)
@@ -281,7 +284,9 @@ class CatalogTab(Frame):
         self.__update_materials(origami)
         self.__update_quotation(origami)
         self.__update_photo(origami)
+
         self.__origami = origami
+        self.__previous_selected_item = tv.selection()[0]
 
     def close_catalog(self):
         print("TODO stop_video")
