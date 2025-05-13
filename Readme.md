@@ -21,7 +21,7 @@ python -m lodn chemin_vers_le_dossier_du_catalogue
 
 ## Roadmap
 
-* enregistrer les données, meta, video et photo
+* enregistrer les données, meta, instructions et photo
 * génération du site web
 * création d'un devis
 * création d'une facture
