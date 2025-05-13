@@ -1,5 +1,6 @@
 from os import listdir
 from lodn.catalog.origami import Origami
+from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 
 class Catalog(object):
@@ -22,3 +23,11 @@ class Catalog(object):
 
     def export(self, path):
         print("exporting")  # TODO
+        env = Environment(
+            loader=FileSystemLoader('templates'),
+            autoescape=select_autoescape()
+        )
+        template = env.get_template("template.tpl")
+        html = template.render(titre="Page d'accueil",
+                               utilisateur="Alice")
+        print(html)
