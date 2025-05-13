@@ -1,18 +1,28 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
+  <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Mon Site{% endblock %}</title>
-    <link rel="stylesheet" href="/static/css/style.css">
-</head>
-<body>
+    <title>Les origamis de Nicolas</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
     <header>
-        <h1>{{ titre }} Bienvenue {{ utilisateur }}</h1>
+      <h1>Les origamis de Nicolas</h1>
     </header>
     <main>
+    {% for category in data %}
+      <details class="category">
+        <summary class="category_summary">
+          <h2>Catégorie {{ category }}</h2>
+        </summary>
+      <div class="{{ category }}">
+      {% for origami in data[category] %}
+        <p class="{{ ' '.join(origami.materials) }}">{{ origami.name }}</p>
+      {% endfor %}
+      </details>
+    {% endfor %}
     </main>
     <footer>
     </footer>
-</body>
+  </body>
 </html>

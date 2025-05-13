@@ -1,5 +1,6 @@
 from os import listdir
 from lodn.catalog.origami import Origami
+from lodn.catalog.category import Category
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 
@@ -28,6 +29,13 @@ class Catalog(object):
             autoescape=select_autoescape()
         )
         template = env.get_template("template.tpl")
-        html = template.render(titre="Page d'accueil",
-                               utilisateur="Alice")
-        print(html)
+        data = {c.value: [] for c in Category}
+        for o in self.catalog:
+            for c in Category:
+                if c.value == o.category:
+                    data[c.value].append(o)
+        html = template.render(data=data)
+        with open(f"{path}/index.html", "w") as f:
+            f.write(html)
+
+        # TODO copy style.css, images...
