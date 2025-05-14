@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Les origamis de Nicolas</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
   </head>
   <body>
     <header>
@@ -16,15 +17,15 @@
     {% endfor %}
     {% for category in catalog %}
       {% if catalog[category] %}
-        <details class="category">
+        <details open="true" class="category">
           <summary class="category_summary">
-            <h2>Catégorie {{ category }}</h2>
+            Catégorie {{ category }}
           </summary>
-          <div class="{{ category }}">
+          <div class="category {{ category }}">
           {% for origami in catalog[category] %}
-            <div class="{{ ' '.join(origami.materials) }}">{{ origami.name.capitalize() }}
+            <div class="origami {{ ' '.join(origami.materials) }}">{{ origami.name.capitalize() }}
+              <div class="photo-container"><img class="photo" src="{{ origami.name }}.png" /></div>
               <p class="comment">{{ origami.comment }}</p>
-              <img src="{{ origami.name }}.png" />
               <h3>Caractéristiques</h3>
               <ul>
                 {% if origami.diameter != 0 %}
@@ -50,7 +51,7 @@
               {% else %}
                 Quotation non disponible, nous contacter.
               {% endif %}
-
+              <hr/>
             </div>
           {% endfor %}
         </details>
