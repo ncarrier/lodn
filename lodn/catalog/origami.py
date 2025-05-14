@@ -9,6 +9,7 @@ class Origami:
     IMG_WIDTH = 300
     IMG_HEIGHT = 200
     RESOURCES = f"{os.path.dirname(__file__)}/../../resources"
+    PLACEHOLDER_PHOTO = f"{RESOURCES}/no_photo.png"
 
     def __init__(self, path):
         self.__setup_paths(path)
@@ -33,8 +34,7 @@ class Origami:
         try:
             image = Image.open(self.__photo_path)
         except FileNotFoundError:
-            placeholder = f"{Origami.RESOURCES}/no_photo.png"
-            image = Image.open(placeholder)
+            image = Image.open(Origami.PLACEHOLDER_PHOTO)
 
         width, height = Origami.get_resized_dimensions(*image.size)
         resized_image = image.resize((width, height))

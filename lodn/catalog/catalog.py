@@ -1,4 +1,5 @@
 from os import listdir
+import shutil
 from lodn.catalog.origami import Origami
 from lodn.catalog.category import Category
 from lodn.catalog.material import Material
@@ -50,10 +51,24 @@ class Catalog(object):
         with open(f"{path}/index.html", "w") as f:
             f.write(html)
 
+    def __copy_resources(self, path):
+        for o in self.catalog:
+            try:
+                shutil.copyfile(o.photo_path, f"{path}/{o.name}.png")
+            except FileNotFoundError:
+                shutil.copyfile(
+                    Origami.PLACEHOLDER_PHOTO,
+                    f"{path}/{o.name}.png"
+                )
+
+        for r in ["style.css", "lodn.js", "favicon.svg"]:
+            src = f"{Origami.RESOURCES}/{r}"
+            dst = f"{path}/{r}"
+            shutil.copyfile(src, dst)
+
     def export(self, path):
         catalog = self.__organize_catalog_by_sections()
         materials = self.__get_materials_list()
 
         Catalog.__dump_html(path, catalog, materials)
-
-        # TODO copy style.css, images...
+        self.__copy_resources(path)
