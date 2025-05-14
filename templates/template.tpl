@@ -22,10 +22,36 @@
           </summary>
           <div class="{{ category }}">
           {% for origami in catalog[category] %}
-            <p class="{{ ' '.join(origami.materials) }}">{{ origami.name.capitalize() }}
+            <div class="{{ ' '.join(origami.materials) }}">{{ origami.name.capitalize() }}
               <p class="comment">{{ origami.comment }}</p>
-    
-            </p>
+              <img src="{{ origami.name }}.png" />
+              <h3>Caractéristiques</h3>
+              <ul>
+                {% if origami.diameter != 0 %}
+                  <li>diamètre : {{ origami.diameter / 10 }} cm</li>
+                {% endif %}
+                {% if origami.height != 0 %}
+                  <li>hauteur : {{ origami.height / 10 }} cm</li>
+                {% endif %}
+                {% if origami.length != 0 %}
+                  <li>longueur : {{ origami.length / 10 }} cm</li>
+                {% endif %}
+                {% if origami.width != 0 %}
+                  <li>largeur : {{ origami.width / 10 }} cm</li>
+                {% endif %}
+                {% if origami.paper_size != 0 %}
+                  <li>taille de feuille/serviette : {{ origami.paper_size / 10 }} cm</li>
+                {% endif %}
+              </ul>
+
+              <h3>Quotation</h3>
+              {% if origami.quotation != 0 %}
+                Durée pour 10 exemplaires : {{ origami.quotation }} minutes</li>
+              {% else %}
+                Quotation non disponible, nous contacter.
+              {% endif %}
+
+            </div>
           {% endfor %}
         </details>
       {% endif %}
