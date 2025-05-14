@@ -61,7 +61,7 @@ class Catalog(object):
                     f"{path}/{o.name}.png"
                 )
 
-        for r in ["style.css", "lodn.js", "favicon.svg"]:
+        for r in ["style.css", "lodn.js", "favicon.svg", "background.png"]:
             src = f"{Origami.RESOURCES}/{r}"
             dst = f"{path}/{r}"
             shutil.copyfile(src, dst)
