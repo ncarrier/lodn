@@ -23,28 +23,37 @@ class Catalog(object):
 
         return None
 
-    def export(self, path):
-        env = Environment(
-            loader=FileSystemLoader('templates'),
-            autoescape=select_autoescape()
-        )
-        template = env.get_template("template.tpl")
-
-        # organize the catalog by sections
+    def __organize_catalog_by_sections(self):
         catalog = {c.value: [] for c in Category}
         for o in self.catalog:
             for c in Category:
                 if c.value == o.category:
                     catalog[c.value].append(o)
 
-        # prepare the list of materials, for filtering
-        materials = [m.value for m in Material]
-        # dump the html
+        return catalog
+
+    def __get_materials_list(self):
+        return [m.value for m in Material]
+
+    @staticmethod
+    def __dump_html(path, catalog, materials):
+        env = Environment(
+            loader=FileSystemLoader('templates'),
+            autoescape=select_autoescape()
+        )
+        template = env.get_template("template.tpl")
+
         html = template.render(
             catalog=catalog,
             materials=materials
         )
         with open(f"{path}/index.html", "w") as f:
             f.write(html)
+
+    def export(self, path):
+        catalog = self.__organize_catalog_by_sections()
+        materials = self.__get_materials_list()
+
+        Catalog.__dump_html(path, catalog, materials)
 
         # TODO copy style.css, images...
