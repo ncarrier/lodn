@@ -15,7 +15,6 @@
 from tkinter import Tk, ttk
 import tkinter
 from lodn.ui.catalog_tab import CatalogTab
-from lodn.ui.export_tab import ExportTab
 from lodn.catalog.catalog import Catalog
 
 appname = "lodn"
@@ -76,17 +75,9 @@ class MainWindow(object):
         notebook.add(catalog_tab, text="Catalog")
         notebook.pack(expand=1, fill="both")
 
-    def __setup_export_tab(self, notebook):
-        self.__export_tab = export_tab = ExportTab(notebook, self.__catalog)
-        export_tab.pack(fill=tkinter.BOTH, expand=True)
-        export_tab.columnconfigure(0, weight=1)
-        notebook.add(export_tab, text="Export")
-        notebook.pack(expand=1, fill="both")
-
     def __setup_tabs(self):
         notebook = self.__notebook
         self.__setup_catalog_tab(notebook)
-        self.__setup_export_tab(notebook)
 
     def __refresh(self):
         self.__root.update()

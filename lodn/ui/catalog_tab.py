@@ -14,6 +14,7 @@
 from tkinter import Frame, ttk, Label, Entry, END, OptionMenu, StringVar
 from tkinter.filedialog import askopenfilename
 from tkinter import Listbox, Scrollbar, INSERT
+from tkinter.filedialog import askdirectory
 from lodn.catalog.material import Material
 from lodn.catalog.category import Category
 from lodn.catalog.origami_variables import OrigamiVariables
@@ -53,6 +54,7 @@ class CatalogTab(Frame):
         self.__setup_controls()
         self.__setup_photo()
         self.__setup_instructions()
+        self.__setup_export()
 
     def __setup_treeview(self):
         self.__treeview = tv = ttk.Treeview(
@@ -203,6 +205,23 @@ class CatalogTab(Frame):
         instr.grid(row=3, column=3, sticky="nswe", padx=(6, 6), pady=(6, 6),
                    rowspan=1)
         instr.bind("<Button-1>", self.__instr_on_clicked)
+
+    def __export_button_on_clicked(self):
+        folder_path = askdirectory(
+            parent=self,
+            title="Choose website folder"
+        )
+        if not folder_path:
+            return
+
+        self.__catalog.export(folder_path)
+
+    def __setup_export(self):
+        self.__export_button = ttk.Button(
+            self, text="Export",
+            command=self.__export_button_on_clicked
+        )
+        self.__export_button.grid(column=3, row=10, pady=3, padx=3)
 
     def __setup_controls(self):
         i = 0
