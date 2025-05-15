@@ -181,7 +181,7 @@ class CatalogTab(Frame):
         photo_path = askopenfilename(
             parent=self,
             title="Choose Origami photo",
-            filetypes=[("png image", "*.png")]
+            filetypes=[("png image", "*.png"), ("jpg image", "*.jpg")]
         )
         if not photo_path:
             return
