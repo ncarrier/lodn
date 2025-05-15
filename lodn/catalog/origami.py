@@ -9,7 +9,7 @@ class Origami:
     IMG_WIDTH = 400
     IMG_HEIGHT = 400
     RESOURCES = f"{os.path.dirname(__file__)}/../../resources"
-    PLACEHOLDER_PHOTO = f"{RESOURCES}/no_photo.png"
+    PLACEHOLDER_PHOTO = f"{RESOURCES}/no_photo.jpg"
 
     def __init__(self, path):
         self.__setup_paths(path)
@@ -27,7 +27,7 @@ class Origami:
     def __setup_paths(self, path):
         self.__path = path
         self.__json_path = f"{path}/meta.json"
-        self.__photo_path = f"{path}/photo.png"
+        self.__photo_path = f"{path}/photo.jpg"
         self.__instructions_glob = f"{path}/instructions.*"
 
     def __load_photo(self):

@@ -24,7 +24,7 @@
           <div class="category {{ category }}">
           {% for origami in catalog[category] %}
             <div class="origami {{ ' '.join(origami.materials) }}">{{ origami.name.capitalize() }}
-              <div class="photo-container"><img class="photo" src="{{ origami.name }}.png" /></div>
+              <div class="photo-container"><img class="photo" src="{{ origami.name }}.jpg" /></div>
               <p class="comment">{{ origami.comment }}</p>
               <h3>Caractéristiques</h3>
               <ul>

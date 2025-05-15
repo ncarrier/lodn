@@ -54,11 +54,11 @@ class Catalog(object):
     def __copy_resources(self, path):
         for o in self.catalog:
             try:
-                shutil.copyfile(o.photo_path, f"{path}/{o.name}.png")
+                shutil.copyfile(o.photo_path, f"{path}/{o.name}.jpg")
             except FileNotFoundError:
                 shutil.copyfile(
                     Origami.PLACEHOLDER_PHOTO,
-                    f"{path}/{o.name}.png"
+                    f"{path}/{o.name}.jpg"
                 )
 
         for r in ["style.css", "lodn.js", "favicon.svg", "background.png"]:
