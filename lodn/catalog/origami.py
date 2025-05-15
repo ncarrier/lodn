@@ -6,8 +6,8 @@ from PIL import Image, ImageTk
 
 
 class Origami:
-    IMG_WIDTH = 300
-    IMG_HEIGHT = 200
+    IMG_WIDTH = 400
+    IMG_HEIGHT = 400
     RESOURCES = f"{os.path.dirname(__file__)}/../../resources"
     PLACEHOLDER_PHOTO = f"{RESOURCES}/no_photo.png"
 
@@ -36,9 +36,8 @@ class Origami:
         except FileNotFoundError:
             image = Image.open(Origami.PLACEHOLDER_PHOTO)
 
-        width, height = Origami.get_resized_dimensions(*image.size)
-        resized_image = image.resize((width, height))
-        self.__photo = ImageTk.PhotoImage(resized_image)
+        image.thumbnail((Origami.IMG_WIDTH, Origami.IMG_HEIGHT))
+        self.__photo = ImageTk.PhotoImage(image)
 
     @property
     def name(self):
@@ -134,31 +133,3 @@ class Origami:
         with open(self.__json_path, "w") as f:
             f.write(dump)
         self.__meta = json.loads(dump)
-
-    @staticmethod
-    def get_resized_dimensions(width, height):
-        """
-        Compute the new dimensions of the image, to fit in the label's size,
-        while keeping the original ratio
-        """
-        img_ratio = height / width
-        cont_ratio = Origami.IMG_HEIGHT / Origami.IMG_WIDTH
-        if img_ratio > cont_ratio:
-            h2 = Origami.IMG_HEIGHT
-            w2 = h2 / img_ratio
-        else:
-            w2 = Origami.IMG_WIDTH
-            h2 = w2 * img_ratio
-
-        return int(w2), int(h2)
-
-
-if __name__ == "__main__":
-    tuples = [
-        (300, 200),
-        (600, 400),
-        (600, 300),
-        (200, 400)
-    ]
-    for t in tuples:
-        print(t, Origami.get_resized_dimensions(*t))
