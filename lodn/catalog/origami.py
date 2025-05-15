@@ -32,12 +32,12 @@ class Origami:
 
     def __load_photo(self):
         try:
-            image = Image.open(self.__photo_path)
+            self.__pil_image = Image.open(self.__photo_path)
         except FileNotFoundError:
-            image = Image.open(Origami.PLACEHOLDER_PHOTO)
+            self.__pil_image = Image.open(Origami.PLACEHOLDER_PHOTO)
 
-        image.thumbnail((Origami.IMG_WIDTH, Origami.IMG_HEIGHT))
-        self.__photo = ImageTk.PhotoImage(image)
+        self.__pil_image.thumbnail((Origami.IMG_WIDTH, Origami.IMG_HEIGHT))
+        self.__photo = ImageTk.PhotoImage(self.__pil_image)
 
     @property
     def name(self):
@@ -88,6 +88,10 @@ class Origami:
     @property
     def photo_path(self):
         return self.__photo_path
+
+    @property
+    def pil_image(self):
+        return self.__pil_image
 
     @property
     def has_instructions(self):
