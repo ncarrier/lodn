@@ -1,0 +1,4 @@
+certbot certonly --webroot -w /var/www/html/ -d ncarrier.online --staple-ocsp -m carrier.nicolas0@gmail.com --agree-tos
+
+certbot certonly -d origami.ncarrier.online --staple-ocsp -m carrier.nicolas0@gmail.com --agree-tos
+
