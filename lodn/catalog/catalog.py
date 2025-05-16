@@ -2,6 +2,7 @@ from os import listdir
 import shutil
 from glob import glob
 from os.path import basename
+import urllib.parse
 
 from lodn.catalog.origami import Origami
 from lodn.catalog.category import Category
@@ -40,16 +41,27 @@ class Catalog(object):
         return [m.value for m in Material]
 
     @staticmethod
+    def __generate_mailto():
+        subject_base = "Demande de devis"
+        body_base = "Merci d'ajouter en pièce jointe le pré-devis généré."
+
+        subject = subject_base.replace(" ", "%20")
+        body = body_base.replace(" ", "%20")
+
+        return f"mailto:ncarrier@live.fr?subject={subject}&body={body}"
+
+    @staticmethod
     def __dump_html(path, catalog, materials):
         env = Environment(
             loader=FileSystemLoader('templates'),
             autoescape=select_autoescape()
         )
         template = env.get_template("template.tpl")
-
+        mailto = Catalog.__generate_mailto()
         html = template.render(
             catalog=catalog,
-            materials=materials
+            materials=materials,
+            mailto=mailto
         )
         with open(f"{path}/index.html", "w") as f:
             f.write(html)
