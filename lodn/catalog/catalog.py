@@ -73,7 +73,7 @@ class Catalog(object):
             dst = f"{path}/{basename(src)}"
             shutil.copyfile(src, dst)
 
-        symlink(f"{path}/catalog.html", f"{path}/index.html")
+        symlink("catalog.html", f"{path}/index.html")
 
     def export(self, path):
         catalog = self.__organize_catalog_by_sections()
