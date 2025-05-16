@@ -2,7 +2,6 @@ from os import listdir
 import shutil
 from glob import glob
 from os.path import basename
-import urllib.parse
 
 from lodn.catalog.origami import Origami
 from lodn.catalog.category import Category
