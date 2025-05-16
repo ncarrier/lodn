@@ -1,10 +1,6 @@
 body {
-    font-family: "Lucida Console", "Courier New", monospace;
+    font-family: verdana, "Lucida Console", "Courier New", monospace;
 }
-
-/* .origami {
-        width: 100%;
-} */
 
 .origami-container {
     width: 100%;
@@ -15,16 +11,14 @@ body {
     min-width: 400px;
     border-radius: 25px;
     border: 2px solid #73AD21;
-    /* position: relative;
-    right:-60%; */
-}
-
-.photo-container {
-    text-align: right;
 }
 
 table {
     width: 100%
+}
+
+.description {
+    vertical-align : top;
 }
 
 details {
@@ -36,4 +30,11 @@ details {
 
 summary {
     background-color: #eee;
+}
+
+#cocotte {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
 }

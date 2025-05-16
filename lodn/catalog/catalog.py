@@ -1,4 +1,4 @@
-from os import listdir
+from os import listdir, symlink
 import shutil
 from glob import glob
 from os.path import basename
@@ -62,7 +62,7 @@ class Catalog(object):
             materials=materials,
             mailto=mailto
         )
-        with open(f"{path}/index.html", "w") as f:
+        with open(f"{path}/catalog.html", "w") as f:
             f.write(html)
 
     def __copy_resources(self, path):
@@ -72,6 +72,8 @@ class Catalog(object):
         for src in glob(f"{Origami.RESOURCES}/*"):
             dst = f"{path}/{basename(src)}"
             shutil.copyfile(src, dst)
+
+        symlink(f"{path}/catalog.html", f"{path}/index.html")
 
     def export(self, path):
         catalog = self.__organize_catalog_by_sections()

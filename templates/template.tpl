@@ -43,7 +43,7 @@
               <table>
                 <tr>
 
-                  <td>
+                  <td class="description">
                     <em>{{ origami.name.capitalize() }}</em>
                     <p class="comment">{{ origami.comment }}</p>
                     <h3>Caractéristiques</h3>
