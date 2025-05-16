@@ -71,7 +71,6 @@ class MainWindow(object):
         self.__catalog_tab = catalog_tab = CatalogTab(notebook, self.__catalog)
         catalog_tab.pack(fill=tkinter.BOTH, expand=True)
         catalog_tab.columnconfigure(0, weight=1)
-        self.__register_close_event_observer(catalog_tab.close_catalog)
         notebook.add(catalog_tab, text="Catalog")
         notebook.pack(expand=1, fill="both")
 

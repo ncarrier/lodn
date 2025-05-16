@@ -191,8 +191,8 @@ class CatalogTab(Frame):
 
     def __setup_photo(self):
         self.__photo = photo = ttk.Label(self, cursor="hand2")
-        photo.grid(row=0, column=3, sticky="nswe", padx=(6, 6), pady=(6, 6),
-                   rowspan=3)
+        photo.grid(row=0, column=4, sticky="nswe", padx=(6, 6), pady=(6, 6),
+                   rowspan=9)
         photo.bind("<Button-1>", self.__photo_on_clicked)
 
     def __instr_on_clicked(self, event):
@@ -202,7 +202,7 @@ class CatalogTab(Frame):
 
     def __setup_instructions(self):
         self.__instructions = instr = ttk.Label(self, cursor="hand2")
-        instr.grid(row=3, column=3, sticky="nswe", padx=(6, 6), pady=(6, 6),
+        instr.grid(row=9, column=4, sticky="we", padx=(6, 6), pady=(6, 6),
                    rowspan=1)
         instr.bind("<Button-1>", self.__instr_on_clicked)
 
@@ -221,7 +221,7 @@ class CatalogTab(Frame):
             self, text="Export",
             command=self.__export_button_on_clicked
         )
-        self.__export_button.grid(column=3, row=10, pady=3, padx=3)
+        self.__export_button.grid(column=4, row=10, pady=3, padx=3)
 
     def __setup_controls(self):
         i = 0
@@ -329,7 +329,3 @@ class CatalogTab(Frame):
 
         self.__origami = origami
         self.__previous_selected_item = tv.selection()[0]
-
-    def close_catalog(self):
-        print("TODO stop_video")
-        self.__save(self.__origami)
