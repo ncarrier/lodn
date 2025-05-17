@@ -207,10 +207,17 @@ class CatalogTab(Frame):
         instr.bind("<Button-1>", self.__instr_on_clicked)
 
     def __export_button_on_clicked(self):
+        # for an unkown reason, calling askdirectory unsets the selection of
+        # the materials list box.
+        # to workaround that, we disable the listbox while the dialog is open
+        # and the we reenable it and restore its selection state
+        self.__materials.config(state="disabled")
         folder_path = askdirectory(
             parent=self,
             title="Choose website folder"
         )
+        self.__materials.config(state="normal")
+        self.__update_materials(self.__origami)
         if not folder_path:
             return
 
