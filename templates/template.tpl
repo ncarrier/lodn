@@ -26,7 +26,7 @@
     <label for="size">Taille des feuilles / serviettes (carrées, en cm) :</label>
     <input id="size" type="number" name="size" value="40" min="0" max="50"/>
     {% for material in materials.__members__ %}
-      {% if material.value in ["fabric napkin", "paper napkin"] %}
+      {% if material in ["FABRIC_NAPKIN", "PAPER_NAPKIN"] %}
       <input class="material_checkbox" type="checkbox" id="{{ material }}" name="{{ material }}" checked />
       {% else %}
       <input class="material_checkbox" type="checkbox" id="{{ material }}" name="{{ material }}"/>
