@@ -1,5 +1,6 @@
 from os import listdir, symlink, replace
 import shutil
+import urllib
 from glob import glob
 from os.path import basename
 
@@ -82,3 +83,10 @@ class Catalog(object):
 
         Catalog.__dump_html(path, catalog, materials)
         self.__copy_resources(path)
+
+    def __str__(self):
+        res = ""
+        for o in self.__catalog:
+            res += f"{str(o)}\n"
+
+        return res
