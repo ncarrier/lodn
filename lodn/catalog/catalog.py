@@ -41,11 +41,11 @@ class Catalog(object):
 
     @staticmethod
     def __generate_mailto():
-        subject_base = "Demande de devis"
-        body_base = "Merci d'ajouter en pièce jointe le pré-devis généré."
+        subject = "Demande de devis"
+        body = "Merci d'ajouter en pièce jointe le pré-devis généré."
 
-        subject = subject_base.replace(" ", "%20")
-        body = body_base.replace(" ", "%20")
+        urllib.parse.quote(subject)
+        urllib.parse.quote(body)
 
         return f"mailto:ncarrier@live.fr?subject={subject}&body={body}"
 
