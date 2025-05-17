@@ -37,9 +37,6 @@ class Catalog(object):
 
         return catalog
 
-    def __get_materials_list(self):
-        return [m.value for m in Material]
-
     @staticmethod
     def __generate_mailto():
         subject = "Demande de devis"
@@ -51,7 +48,7 @@ class Catalog(object):
         return f"mailto:ncarrier@live.fr?subject={subject}&body={body}"
 
     @staticmethod
-    def __dump_html(path, catalog, materials):
+    def __dump_html(path, catalog):
         env = Environment(
             loader=FileSystemLoader('templates'),
             autoescape=select_autoescape()
@@ -60,7 +57,7 @@ class Catalog(object):
         mailto = Catalog.__generate_mailto()
         html = template.render(
             catalog=catalog,
-            materials=materials,
+            materials=Material,
             mailto=mailto
         )
         with open(f"{path}/catalog.html", "w") as f:
@@ -79,9 +76,7 @@ class Catalog(object):
 
     def export(self, path):
         catalog = self.__organize_catalog_by_sections()
-        materials = self.__get_materials_list()
-
-        Catalog.__dump_html(path, catalog, materials)
+        Catalog.__dump_html(path, catalog)
         self.__copy_resources(path)
 
     def __str__(self):
