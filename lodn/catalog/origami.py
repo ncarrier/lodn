@@ -69,6 +69,11 @@ class Origami:
         return self.__meta.get("materials", [])
 
     @property
+    def materials_without_spaces(self):
+        print([m.replace(" ", "_") for m in self.materials])
+        return [m.replace(" ", "_") for m in self.materials]
+
+    @property
     def paper_size(self):
         return self.__meta.get("paper_size", 0)
 
