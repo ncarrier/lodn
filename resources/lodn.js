@@ -51,6 +51,10 @@ function compute_sizes() {
         });
 }
 
+function update_mailto() {
+
+}
+
 function update_prequote() {
         prequote = $("#prequote");
         text = `<table>
@@ -90,6 +94,8 @@ function update_prequote() {
 <p>prix HT : ${wt_price}</p>
         `
         prequote.html(text);
+
+        update_mailto();
 }
 
 $(document).ready(function(){

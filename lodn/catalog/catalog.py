@@ -1,6 +1,5 @@
 from os import listdir, symlink, replace
 import shutil
-import urllib
 from glob import glob
 from os.path import basename
 
@@ -38,27 +37,15 @@ class Catalog(object):
         return catalog
 
     @staticmethod
-    def __generate_mailto():
-        subject = "Demande de devis"
-        body = "Merci d'ajouter en pièce jointe le pré-devis généré."
-
-        urllib.parse.quote(subject)
-        urllib.parse.quote(body)
-
-        return f"mailto:ncarrier@live.fr?subject={subject}&body={body}"
-
-    @staticmethod
     def __dump_html(path, catalog):
         env = Environment(
             loader=FileSystemLoader('templates'),
             autoescape=select_autoescape()
         )
         template = env.get_template("template.tpl")
-        mailto = Catalog.__generate_mailto()
         html = template.render(
             catalog=catalog,
             materials=Material,
-            mailto=mailto,
             hourly_rate=70,  # TODO where to put this parameter ?
         )
         with open(f"{path}/catalog.html", "w") as f:

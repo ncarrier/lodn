@@ -17,9 +17,9 @@
         anniversaires, congrès d'entreprise...<br/>
         Sur cette page, vous pourrez composer un pré-devis et nous l'envoyer
         par mail
-        <a href="{{ mailto }}">
-          à cette addresse
-        </a>, pour obtenir plus de détails.
+        <a id="prequote_mail" href="mailto:ncarrier@live.fr">
+          en cliquant ici
+        </a>.
       </p>
     </header>
     <main>
