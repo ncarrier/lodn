@@ -23,83 +23,84 @@
       </p>
     </header>
     <main>
-    <p>
-      <label for="size">Taille des feuilles / serviettes (carrées, en cm) :</label>
-      <input id="size" type="number" name="size" value="40" min="5" max="50"/>
-    </p>
-    <p>
-      {% for material in materials.__members__ %}
-        {% if material in ["FABRIC_NAPKIN", "PAPER_NAPKIN"] %}
-        <input class="material_checkbox" type="checkbox" id="{{ material }}" name="{{ material }}" checked />
-        {% else %}
-        <input class="material_checkbox" type="checkbox" id="{{ material }}" name="{{ material }}"/>
+      <p>
+        <label for="size">Taille des feuilles / serviettes (carrées, en cm) :</label>
+        <input id="size" type="number" name="size" value="40" min="5" max="50"/>
+        <input type="hidden" id="hourly_rate" value="{{ hourly_rate }}">
+      </p>
+      <p>
+        {% for material in materials.__members__ %}
+          {% if material in ["FABRIC_NAPKIN", "PAPER_NAPKIN"] %}
+          <input class="material_checkbox" type="checkbox" id="{{ material }}" name="{{ material }}" checked />
+          {% else %}
+          <input class="material_checkbox" type="checkbox" id="{{ material }}" name="{{ material }}"/>
+          {% endif %}
+          <label for="{{ material }}">{{ material.capitalize() }}</label>
+        {% endfor %}
+      </p>
+      {% for category in catalog %}
+        {% if catalog[category] %}
+          <details class="category">
+            <summary class="category">
+              {{ category.capitalize() }}
+            </summary>
+            <div id="{{ category }}_category">
+              {% for origami in catalog[category] %}
+                <div class="origami {{ ' '.join(origami.materials_ids) }}">
+                  <table>
+                    <tr>
+                      <td class="description">
+                        <h2>{{ origami.name.capitalize() }}</h2>
+                        <p class="comment">{{ origami.comment }}</p>
+                        <h3>Caractéristiques</h3>
+                        <ul>
+                          {% if origami.diameter != 0 %}
+                            <li class="diameter_text"></li>
+                          {% endif %}
+                          {% if origami.height != 0 %}
+                            <li class="height_text"></li>
+                          {% endif %}
+                          {% if origami.length != 0 %}
+                            <li class="length_text"></li>
+                          {% endif %}
+                          {% if origami.width != 0 %}
+                            <li class="width_text"></li>
+                          {% endif %}
+                        </ul>
+                        <input type="hidden" class="diameter" value="{{origami.diameter}}">
+                        <input type="hidden" class="height" value="{{origami.height}}">
+                        <input type="hidden" class="length" value="{{origami.length}}">
+                        <input type="hidden" class="width" value="{{origami.width}}">
+                        <input type="hidden" class="paper_size" value="{{origami.paper_size}}">
+                        <h3>Quotation</h3>
+                        {% if origami.quotation != 0 %}
+                          <p>Durée pour 10 exemplaires : {{ origami.quotation }} minute(s)</p>
+                          <p>
+                            <label for="{{ origami.name }}_num">Nombre d'origamis :</label>
+                            <input class="origami_num" id="{{ origami.name }}_num" type="number" name="{{ origami.name }}_num" value="0" min="0" max="1000"/>
+                          </p>
+                        {% else %}
+                          <p>Quotation non disponible, nous contacter.</p>
+                        {% endif %}
+                      </td>
+                      <td class="photo-container">
+                        <img class="photo" src="{{ origami.name }}.jpg" />
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              {% endfor %}
+            </div>
+          </details>
         {% endif %}
-        <label for="{{ material }}">{{ material.capitalize() }}</label>
       {% endfor %}
-    </p>
-    {% for category in catalog %}
-      {% if catalog[category] %}
-        <details class="category" open>
-        <!-- <details class="category"> TODO -->
-          <summary class="category">
-            {{ category.capitalize() }}
-          </summary>
-          <div id="{{ category }}_category">
-            {% for origami in catalog[category] %}
-              <div class="origami {{ ' '.join(origami.materials_ids) }}">
-                <table>
-                  <tr>
-                    <td class="description">
-                      <em>{{ origami.name.capitalize() }}</em>
-                      <p class="comment">{{ origami.comment }}</p>
-                      <h3>Caractéristiques</h3>
-                      <ul>
-                        {% if origami.diameter != 0 %}
-                          <li class="diameter_text"></li>
-                        {% endif %}
-                        {% if origami.height != 0 %}
-                          <li class="height_text"></li>
-                        {% endif %}
-                        {% if origami.length != 0 %}
-                          <li class="length_text"></li>
-                        {% endif %}
-                        {% if origami.width != 0 %}
-                          <li class="width_text"></li>
-                        {% endif %}
-                      </ul>
-                      <input type="hidden" class="diameter" value="{{origami.diameter}}">
-                      <input type="hidden" class="height" value="{{origami.height}}">
-                      <input type="hidden" class="length" value="{{origami.length}}">
-                      <input type="hidden" class="width" value="{{origami.width}}">
-                      <input type="hidden" class="paper_size" value="{{origami.paper_size}}">
-                      <h3>Quotation</h3>
-                      {% if origami.quotation != 0 %}
-                        <p>Durée pour 10 exemplaires : {{ origami.quotation }} minute(s)</p>
-                        <p>
-                          <label for="quantity">Nombre d'origamis :</label>
-                          <input id="quantity" type="number" name="{{ origami.name }}_num" value="0" min="0" max="1000"/>
-                        </p>
-                      {% else %}
-                        <p>Quotation non disponible, nous contacter.</p>
-                      {% endif %}
-                    </td>
-
-                    <td class="photo-container">
-                      <img class="photo" src="{{ origami.name }}.jpg" />
-                    </td>
-
-                  </tr>
-                </table>
-              </div>
-            {% endfor %}
-          </div>
-        </details>
-        <hr/>
-      {% endif %}
-    {% endfor %}
+      <h2>Prédevis</h2>
+      <p id="prequote">
+        Choisissez vos quantités pour mettre à jour le prédevis
+      </p>
     </main>
     <footer>
-    Ce site n'utilise pas de cookie et n'enregistre aucune donnée.
+      Ce site n'utilise pas de cookie et n'enregistre aucune donnée.
     </footer>
   </body>
 </html>

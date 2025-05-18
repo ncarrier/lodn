@@ -49,7 +49,10 @@ function compute_sizes() {
                         text.text(d + ": " + (Math.round(new_dimension) / 10) + " cm")
                 })
         });
+}
 
+function update_prequote() {
+        console.log("here");
 }
 
 $(document).ready(function(){
@@ -62,5 +65,10 @@ $(document).ready(function(){
         compute_sizes()
         $(document).on('input', '#size', function(){
                 compute_sizes();
+        })
+        $("input.origami_num").each(function() {
+                $(this).click(function() {
+                        update_prequote();
+                })
         })
 });

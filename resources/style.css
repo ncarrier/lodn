@@ -38,3 +38,12 @@ summary {
     top: 50%;
     transform: translate(-50%, -50%);
 }
+
+#prequote {
+    background-color: #eee;
+}
+
+footer {
+    font-size: smaller;
+    font-style: italic;
+}

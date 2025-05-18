@@ -58,7 +58,8 @@ class Catalog(object):
         html = template.render(
             catalog=catalog,
             materials=Material,
-            mailto=mailto
+            mailto=mailto,
+            hourly_rate=70,  # TODO where to put this parameter ?
         )
         with open(f"{path}/catalog.html", "w") as f:
             f.write(html)
