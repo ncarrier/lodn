@@ -31,7 +31,22 @@ function filter_materials() {
 function compute_sizes() {
         description_cells = $("td.description")
         current_size = $("#size").val()
-        console.log(current_size)
+
+        description_cells.each(function(){
+                diameter_text = $(this).find(".diameter_text")
+                if (diameter_text.length == 0)
+                        return;
+                paper_size = $(this).find(".paper_size").attr("value")
+                if (paper_size == 0) {
+                        diameter_text.text("Pas de taille de papier définie dans le catalogue")
+                        return;
+                }
+                base_diameter = $(this).find(".diameter").attr("value")
+                /* sizes are in mm in the catalog, but in cm in the web page */
+                new_diameter = (base_diameter * current_size * 10) / paper_size;
+                diameter_text.text("diamètre: " + (new_diameter / 10) + " cm")
+        });
+
 }
 
 $(document).ready(function(){
