@@ -52,7 +52,44 @@ function compute_sizes() {
 }
 
 function update_prequote() {
-        console.log("here");
+        prequote = $("#prequote");
+        text = `<table>
+  <tr>
+    <th>Nom</th>
+    <th>Quantité</th>
+    <th>Durée unitaire</th>
+    <th>Durée totale</th>
+  </tr>`;
+        hourly_rate = $("#hourly_rate").val()
+        console.log(hourly_rate);
+        total_duration = 0;
+        $("div.origami").each(function() {
+                quotation = $(this).find(".quotation").attr("value");
+                if (quotation == 0)
+                        return;
+                origami_num = $(this).find(".origami_num").val()
+                if (origami_num == 0)
+                        return;
+                origami_name = $(this).find(".origami_name").attr("value");
+                console.log(origami_name);
+                unit_duration = quotation / 10;
+                duration = unit_duration * origami_num;
+                text += `  <tr>
+    <td>${origami_name}</td>
+    <td>${origami_num}</td>
+    <td>${unit_duration}</td>
+    <td>${duration}</td>
+  </tr>`;
+                total_duration += duration;
+        });
+        ti_price = Math.round((total_duration * hourly_rate) / 60);
+        wt_price = Math.round(100 * (ti_price / 1.20)) / 100;
+        text += `</table>
+<p>durée totale : ${total_duration}</p>
+<p>prix TTC : ${ti_price}</p>
+<p>prix HT : ${wt_price}</p>
+        `
+        prequote.html(text);
 }
 
 $(document).ready(function(){
@@ -66,6 +103,7 @@ $(document).ready(function(){
         $(document).on('input', '#size', function(){
                 compute_sizes();
         })
+        update_prequote();
         $("input.origami_num").each(function() {
                 $(this).click(function() {
                         update_prequote();

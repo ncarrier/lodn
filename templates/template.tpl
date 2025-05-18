@@ -47,7 +47,7 @@
             <div id="{{ category }}_category">
               {% for origami in catalog[category] %}
                 <div class="origami {{ ' '.join(origami.materials_ids) }}">
-                  <table>
+                  <table class="origami_table">
                     <tr>
                       <td class="description">
                         <h2>{{ origami.name.capitalize() }}</h2>
@@ -72,6 +72,8 @@
                         <input type="hidden" class="length" value="{{origami.length}}">
                         <input type="hidden" class="width" value="{{origami.width}}">
                         <input type="hidden" class="paper_size" value="{{origami.paper_size}}">
+                        <input type="hidden" class="quotation" value="{{origami.quotation}}">
+                        <input type="hidden" class="origami_name" value="{{origami.name}}">
                         <h3>Quotation</h3>
                         {% if origami.quotation != 0 %}
                           <p>Durée pour 10 exemplaires : {{ origami.quotation }} minute(s)</p>
@@ -95,9 +97,9 @@
         {% endif %}
       {% endfor %}
       <h2>Prédevis</h2>
-      <p id="prequote">
+      <div id="prequote">
         Choisissez vos quantités pour mettre à jour le prédevis
-      </p>
+      </div>
     </main>
     <footer>
       Ce site n'utilise pas de cookie et n'enregistre aucune donnée.
