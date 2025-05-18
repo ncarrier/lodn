@@ -97,6 +97,11 @@
         {% endif %}
       {% endfor %}
       <h2>Prédevis</h2>
+      <p>
+        <strong>Attention</strong>, ce pré-devis ne tient pas compte des frais
+        de déplacement, ni du coût des matériaux si ceux-ci ne sont pas fournis
+        par le client.
+      </p>
       <div id="prequote">
         Choisissez vos quantités pour mettre à jour le prédevis
       </div>

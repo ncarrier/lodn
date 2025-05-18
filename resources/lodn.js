@@ -51,8 +51,12 @@ function compute_sizes() {
         });
 }
 
-function update_mailto() {
-
+function update_mailto(text) {
+        mailto_link = $("#prequote_mail");
+        subject = encodeURIComponent("Demande de devis")
+        body = encodeURIComponent(text)
+        link = `mailto:ncarrier@live.fr?subject=${subject}&body=${body}`;
+        mailto_link.attr("href", link)
 }
 
 function update_prequote() {
@@ -61,11 +65,10 @@ function update_prequote() {
   <tr>
     <th>Nom</th>
     <th>Quantité</th>
-    <th>Durée unitaire</th>
-    <th>Durée totale</th>
+    <th>Durée unitaire (min)</th>
+    <th>Durée totale (min)</th>
   </tr>`;
         hourly_rate = $("#hourly_rate").val()
-        console.log(hourly_rate);
         total_duration = 0;
         $("div.origami").each(function() {
                 quotation = $(this).find(".quotation").attr("value");
@@ -75,7 +78,6 @@ function update_prequote() {
                 if (origami_num == 0)
                         return;
                 origami_name = $(this).find(".origami_name").attr("value");
-                console.log(origami_name);
                 unit_duration = quotation / 10;
                 duration = unit_duration * origami_num;
                 text += `  <tr>
@@ -89,13 +91,13 @@ function update_prequote() {
         ti_price = Math.round((total_duration * hourly_rate) / 60);
         wt_price = Math.round(100 * (ti_price / 1.20)) / 100;
         text += `</table>
-<p>durée totale : ${total_duration}</p>
-<p>prix TTC : ${ti_price}</p>
-<p>prix HT : ${wt_price}</p>
+<p>durée totale : ${total_duration} min<br/>
+prix TTC : ${ti_price} €<br/>
+prix HT : ${wt_price} €</p>
         `
         prequote.html(text);
 
-        update_mailto();
+        update_mailto(text);
 }
 
 $(document).ready(function(){
