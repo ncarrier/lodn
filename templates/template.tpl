@@ -25,7 +25,7 @@
     <main>
     <p>
       <label for="size">Taille des feuilles / serviettes (carrées, en cm) :</label>
-      <input id="size" type="number" name="size" value="40" min="0" max="50"/>
+      <input id="size" type="number" name="size" value="40" min="5" max="50"/>
     </p>
     <p>
       {% for material in materials.__members__ %}
@@ -55,23 +55,23 @@
                       <h3>Caractéristiques</h3>
                       <ul>
                         {% if origami.diameter != 0 %}
-                          <li>diamètre : {{ origami.diameter / 10 }} cm</li>
+                          <li class="diameter_text"></li>
                         {% endif %}
                         {% if origami.height != 0 %}
-                          <li>hauteur : {{ origami.height / 10 }} cm</li>
+                          <li class="height_text"></li>
                         {% endif %}
                         {% if origami.length != 0 %}
-                          <li>longueur : {{ origami.length / 10 }} cm</li>
+                          <li class="length_text"></li>
                         {% endif %}
                         {% if origami.width != 0 %}
-                          <li>largeur : {{ origami.width / 10 }} cm</li>
+                          <li class="width_text"></li>
                         {% endif %}
-                      </ul>
-                      <input type="hidden" name="{{origami.name}}_diameter" value="{{origami.diameter}}">
-                      <input type="hidden" name="{{origami.name}}_height" value="{{origami.height}}">
-                      <input type="hidden" name="{{origami.name}}_length" value="{{origami.length}}">
-                      <input type="hidden" name="{{origami.name}}_paper_size" value="{{origami.paper_size}}">
-                      <input type="hidden" name="{{origami.name}}_width" value="{{origami.width}}">
+
+                      <input type="hidden" class="diameter" value="{{origami.diameter}}">
+                      <input type="hidden" class="height" value="{{origami.height}}">
+                      <input type="hidden" class="length" value="{{origami.length}}">
+                      <input type="hidden" class="width" value="{{origami.width}}">
+                      <input type="hidden" class="paper_size" value="{{origami.paper_size}}">
                       <h3>Quotation</h3>
                       {% if origami.quotation != 0 %}
                         <p>Durée pour 10 exemplaires : {{ origami.quotation }} minute(s)</p>

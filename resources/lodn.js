@@ -24,11 +24,25 @@ function filter_materials() {
         })
 }
 
+/**
+ * Compute the dimensions of the origamis based on their original dimensions,
+ * their original paper sizes and the requested paper size.
+ */
+function compute_sizes() {
+        description_cells = $("td.description")
+        current_size = $("#size").val()
+        console.log(current_size)
+}
+
 $(document).ready(function(){
         filter_materials()
         $("input.material_checkbox").each(function() {
                 $(this).click(function() {
                         filter_materials();
                 })
+        })
+        compute_sizes()
+        $(document).on('input', '#size', function(){
+                compute_sizes();
         })
 });
