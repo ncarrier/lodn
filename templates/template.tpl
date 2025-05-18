@@ -66,7 +66,7 @@
                         {% if origami.width != 0 %}
                           <li class="width_text"></li>
                         {% endif %}
-
+                      </ul>
                       <input type="hidden" class="diameter" value="{{origami.diameter}}">
                       <input type="hidden" class="height" value="{{origami.height}}">
                       <input type="hidden" class="length" value="{{origami.length}}">
@@ -99,7 +99,7 @@
     {% endfor %}
     </main>
     <footer>
-    Ce site n'utilise pas de cookie et n'enregistre aucune données.
+    Ce site n'utilise pas de cookie et n'enregistre aucune donnée.
     </footer>
   </body>
 </html>
