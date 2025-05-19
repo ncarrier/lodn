@@ -29,13 +29,13 @@
         <input type="hidden" id="hourly_rate" value="{{ hourly_rate }}">
       </p>
       <p>
-        {% for material in materials.__members__ %}
-          {% if material in ["FABRIC_NAPKIN", "PAPER_NAPKIN"] %}
-          <input class="material_checkbox" type="checkbox" id="{{ material }}" name="{{ material }}" checked />
+        {% for material in materials %}
+          {% if material.name in ["FABRIC_NAPKIN", "PAPER_NAPKIN"] %}
+          <input class="material_checkbox" type="checkbox" id="{{ material.name }}" name="{{ material.name }}" checked />
           {% else %}
-          <input class="material_checkbox" type="checkbox" id="{{ material }}" name="{{ material }}"/>
+          <input class="material_checkbox" type="checkbox" id="{{ material.name }}" name="{{ material.name }}"/>
           {% endif %}
-          <label for="{{ material }}">{{ material.capitalize() }}</label>
+          <label for="{{ material.name }}">{{ material.value.capitalize() }}</label>
         {% endfor %}
       </p>
       {% for category in catalog %}

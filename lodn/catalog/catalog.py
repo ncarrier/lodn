@@ -2,11 +2,11 @@ from os import listdir, symlink, replace
 import shutil
 from glob import glob
 from os.path import basename
+from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from lodn.catalog.origami import Origami
 from lodn.catalog.category import Category
 from lodn.catalog.material import Material
-from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 
 class Catalog(object):

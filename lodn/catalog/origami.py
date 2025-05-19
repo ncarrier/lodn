@@ -4,6 +4,8 @@ import shutil
 from glob import glob
 from PIL import Image, ImageTk
 
+from lodn.catalog.material import Material
+
 
 class Origami:
     IMG_WIDTH = 400
@@ -43,7 +45,7 @@ class Origami:
     def name(self):
         return os.path.basename(self.__path)
 
-    # properties from the meta.jon file
+    # properties from the meta.json file
     @property
     def category(self):
         return self.__meta.get("category", "object")
@@ -70,7 +72,7 @@ class Origami:
 
     @property
     def materials_ids(self):
-        return [m.replace(" ", "_").upper() for m in self.materials]
+        return [Material(m).name for m in self.materials]
 
     @property
     def paper_size(self):
