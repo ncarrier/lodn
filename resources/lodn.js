@@ -51,10 +51,43 @@ function compute_sizes() {
         });
 }
 
-function update_mailto(text) {
+function format_duration_in_minutes(duration) {
+        hours = Math.floor(duration / 60);
+        minutes = Math.round(duration) % 60;
+
+        if (hours != 0)
+                return `${hours} h ${minutes} min`;
+
+        return `${minutes} min`;
+}
+
+function update_mailto() {
         mailto_link = $("#prequote_mail");
         subject = encodeURIComponent("Demande de devis")
-        body = encodeURIComponent(text)
+        body_text = `
+
+
+Ne pas modifier le texte sous la ligne suivante.
+---------------------------------------------------------------
+Nom;Quantité;Durée unitaire;Durée totale
+`
+        total_duration = 0;
+        $("div.origami").each(function() {
+                quotation = $(this).find(".quotation").attr("value");
+                if (quotation == 0)
+                        return;
+                origami_num = $(this).find(".origami_num").val()
+                if (origami_num == 0)
+                        return;
+                origami_name = $(this).find(".origami_name").attr("value");
+                unit_duration = quotation / 10;
+                duration = unit_duration * origami_num;
+                body_text += `${origami_name};${origami_num};${unit_duration};${duration}
+`
+                total_duration += duration;
+        });
+        // TODO total duration
+        body = encodeURIComponent(body_text)
         link = `mailto:ncarrier@live.fr?subject=${subject}&body=${body}`;
         mailto_link.attr("href", link)
 }
@@ -84,17 +117,17 @@ function update_prequote() {
     <td>${origami_name}</td>
     <td>${origami_num}</td>
     <td>${unit_duration}</td>
-    <td>${duration}</td>
+    <td>${format_duration_in_minutes(duration)}</td>
   </tr>`;
                 total_duration += duration;
         });
         ti_price = Math.round((total_duration * hourly_rate) / 60);
         wt_price = Math.round(100 * (ti_price / 1.20)) / 100;
         text += `</table>
-<p>durée totale : ${total_duration} min<br/>
-prix TTC : ${ti_price} €<br/>
-prix HT : ${wt_price} €</p>
-        `
+<p>Durée totale : ${format_duration_in_minutes(total_duration)}<br/>
+Prix TTC : ${ti_price} €<br/>
+Prix HT : ${wt_price} €</p>
+`
         prequote.html(text);
 
         update_mailto(text);
