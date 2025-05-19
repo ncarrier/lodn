@@ -68,7 +68,9 @@ class Origami:
 
     @property
     def materials(self):
-        return self.__meta.get("materials", [])
+        materials = self.__meta.get("materials", [])
+        values = [m.value for m in Material]
+        return [m for m in materials if m in values]
 
     @property
     def materials_ids(self):
