@@ -16,3 +16,5 @@ if __name__ == "__main__":
         print(m.value.capitalize(), m.name)
     n = Material("bristol")
     print(n.name)
+    print(Material._member_map_.values())
+    print([m.value for m in Material])
