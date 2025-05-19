@@ -61,46 +61,27 @@ function format_duration_in_minutes(duration) {
         return `${minutes} min`;
 }
 
-function update_mailto() {
-        mailto_link = $("#prequote_mail");
-        subject = encodeURIComponent("Demande de devis")
-        body_text = `
-
-
-Ne pas modifier le texte sous la ligne suivante.
----------------------------------------------------------------
-Nom;Quantité;Durée unitaire;Durée totale
-`
-        total_duration = 0;
-        $("div.origami").each(function() {
-                quotation = $(this).find(".quotation").attr("value");
-                if (quotation == 0)
-                        return;
-                origami_num = $(this).find(".origami_num").val()
-                if (origami_num == 0)
-                        return;
-                origami_name = $(this).find(".origami_name").attr("value");
-                unit_duration = quotation / 10;
-                duration = unit_duration * origami_num;
-                body_text += `${origami_name};${origami_num};${unit_duration};${duration}
-`
-                total_duration += duration;
-        });
-        // TODO total duration
-        body = encodeURIComponent(body_text)
-        link = `mailto:ncarrier@live.fr?subject=${subject}&body=${body}`;
-        mailto_link.attr("href", link)
-}
-
-function update_prequote() {
+function update_prequote_and_mailto() {
         prequote = $("#prequote");
-        text = `<table>
+        mailto_link = $("#prequote_mail");
+
+        // headers
+        prequote_text = `<table>
   <tr>
     <th>Nom</th>
     <th>Quantité</th>
     <th>Durée unitaire (min)</th>
     <th>Durée totale (min)</th>
   </tr>`;
+        mailto_text = `
+
+
+Ne pas modifier le texte sous la ligne suivante.
+---------------------------------------------------------------
+Nom;Quantité;Durée unitaire;Durée totale
+`
+
+        // bodies
         hourly_rate = $("#hourly_rate").val()
         total_duration = 0;
         $("div.origami").each(function() {
@@ -113,24 +94,39 @@ function update_prequote() {
                 origami_name = $(this).find(".origami_name").attr("value");
                 unit_duration = quotation / 10;
                 duration = unit_duration * origami_num;
-                text += `  <tr>
+                prequote_text += `  <tr>
     <td>${origami_name}</td>
     <td>${origami_num}</td>
     <td>${unit_duration}</td>
     <td>${format_duration_in_minutes(duration)}</td>
   </tr>`;
+                mailto_text += `${origami_name};${origami_num};${unit_duration};${duration}
+`
                 total_duration += duration;
         });
+
+        // footers
         ti_price = Math.round((total_duration * hourly_rate) / 60);
         wt_price = Math.round(100 * (ti_price / 1.20)) / 100;
-        text += `</table>
+        prequote_text += `</table>
 <p>Durée totale : ${format_duration_in_minutes(total_duration)}<br/>
 Prix TTC : ${ti_price} €<br/>
 Prix HT : ${wt_price} €</p>
 `
-        prequote.html(text);
+        mailto_text += `
+---------------------------------------------------------------
+Durée totale : ${format_duration_in_minutes(total_duration)}
+Prix TTC : ${ti_price} €
+Prix HT : ${wt_price} €
+`
 
-        update_mailto(text);
+        // application
+        prequote.html(prequote_text);
+
+        subject = encodeURIComponent("Demande de devis")
+        body = encodeURIComponent(mailto_text)
+        link = `mailto:ncarrier@live.fr?subject=${subject}&body=${body}`;
+        mailto_link.attr("href", link)
 }
 
 $(document).ready(function(){
@@ -144,10 +140,10 @@ $(document).ready(function(){
         $(document).on('input', '#size', function(){
                 compute_sizes();
         })
-        update_prequote();
+        update_prequote_and_mailto();
         $("input.origami_num").each(function() {
                 $(this).click(function() {
-                        update_prequote();
+                        update_prequote_and_mailto();
                 })
         })
 });
