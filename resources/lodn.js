@@ -24,6 +24,13 @@ function filter_materials() {
         })
 }
 
+dimension_translation = {
+        "diameter": "diamètre",
+        "height": "hauteur",
+        "length": "longeur",
+        "width": "largeur"
+}
+
 /**
  * Compute the dimensions of the origamis based on their original dimensions,
  * their original paper sizes and the requested paper size.
@@ -46,7 +53,7 @@ function compute_sizes() {
                         base_dimension = $(this).find("." + d).attr("value")
                         /* sizes are in mm in the catalog, but in cm in the web page */
                         new_dimension = (base_dimension * current_size * 10) / paper_size;
-                        text.text(d + ": " + (Math.round(new_dimension) / 10) + " cm")
+                        text.text(`${dimension_translation[d]} : ${(Math.round(new_dimension) / 10)} cm`)
                 })
         });
 }
