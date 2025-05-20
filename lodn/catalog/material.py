@@ -6,9 +6,9 @@ class Material(Enum):
     PAPER_NAPKIN = "serviette en papier"
     KAMI = "papier kami"
     BRISTOL = "bristol"
-    # KRAFT = "kraft"
-    # SILK_PAPER = "silk paper"
-    # SPONGE_NAPKIN = "sponge napkin"
+    KRAFT = "kraft"
+    SILK_PAPER = "paper de soie"
+    SPONGE_NAPKIN = "serviette en éponge"
 
 
 if __name__ == "__main__":

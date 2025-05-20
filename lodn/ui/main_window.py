@@ -14,6 +14,9 @@
 
 from tkinter import Tk, ttk
 import tkinter
+import os
+from PIL import ImageTk
+
 from lodn.ui.catalog_tab import CatalogTab
 from lodn.catalog.catalog import Catalog
 
@@ -53,6 +56,14 @@ class MainWindow(object):
 
     def __setup_window(self):
         self.__root.title(appname.capitalize())
+        icon = fr"{os.path.dirname(__file__)}/../../resources/favicon.png"
+        img = ImageTk.PhotoImage(file=icon)
+        self.__root.iconphoto(True, img)
+        try:
+            ttk.Style().theme_use("clam")
+        except Exception:
+            pass
+
         self.__setup_notebook()
 
     def __setup_notebook(self):

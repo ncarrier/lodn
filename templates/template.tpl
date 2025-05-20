@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Les origamis de Nicolas</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/svg+xml" href="favicon.png">
     <script src="jquery-3.7.1.min.js"></script>
     <script src="lodn.js"></script>
   </head>

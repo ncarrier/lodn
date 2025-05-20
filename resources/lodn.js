@@ -61,6 +61,10 @@ function format_duration_in_minutes(duration) {
         return `${minutes} min`;
 }
 
+/**
+ * Generates a prequote and insert it in html, in the page and in csv form in
+ * the mailto link.
+ */
 function update_prequote_and_mailto() {
         prequote = $("#prequote");
         mailto_link = $("#prequote_mail");
@@ -142,8 +146,8 @@ $(document).ready(function(){
         })
         update_prequote_and_mailto();
         $("input.origami_num").each(function() {
-                $(this).click(function() {
+                $(this).on('input', function() {
                         update_prequote_and_mailto();
-                })
+                });
         })
 });

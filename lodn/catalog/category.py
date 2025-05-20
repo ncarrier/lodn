@@ -2,11 +2,11 @@ from enum import Enum
 
 
 class Category(Enum):
-    FAUNA = "fauna"
-    FLORA = "flora"
-    NON_FIGURATIVE = "non figurative"
-    OBJECT = "object"
-    POUCH = "pouch"
+    FAUNA = "faune"
+    FLORA = "flore"
+    NON_FIGURATIVE = "non figuratif"
+    OBJECT = "objet"
+    POUCH = "pochette"
 
 
 if __name__ == "__main__":
@@ -14,3 +14,4 @@ if __name__ == "__main__":
     for c in Category:
         print(c.value.capitalize())
     print(list(Category))
+    print(Category.OBJECT.value)

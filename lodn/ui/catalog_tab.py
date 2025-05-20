@@ -221,6 +221,8 @@ class CatalogTab(Frame):
         if not folder_path:
             return
 
+        self.__save_current_origami(self.__treeview)
+
         self.__catalog.export(folder_path)
 
     def __setup_export(self):
@@ -312,13 +314,17 @@ class CatalogTab(Frame):
             i += 1
         origami.save(self.__ori_var)
 
-    def __on_treeview_select(self, event):
-        tv = self.__treeview
+    def __save_current_origami(self, tv):
         origami = self.__origami
         if origami is not None:
             self.__save(origami)
             # update the name of the previous origami in the treeview too.
             tv.item(self.__previous_selected_item, values=(origami.name,))
+
+    def __on_treeview_select(self, event):
+        tv = self.__treeview
+
+        self.__save_current_origami(tv)
 
         origami = self.__get_current_origami()
         self.__update_name(origami)

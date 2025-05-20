@@ -5,6 +5,7 @@ from glob import glob
 from PIL import Image, ImageTk
 
 from lodn.catalog.material import Material
+from lodn.catalog.category import Category
 
 
 class Origami:
@@ -48,7 +49,13 @@ class Origami:
     # properties from the meta.json file
     @property
     def category(self):
-        return self.__meta.get("category", "object")
+        default = Category.OBJECT.value
+        admissible_values = [c.value for c in Category]
+        res = self.__meta.get("category", default)
+        if res not in admissible_values:
+            return default
+
+        return res
 
     @property
     def comment(self):
