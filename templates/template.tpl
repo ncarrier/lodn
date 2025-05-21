@@ -34,14 +34,14 @@
             Le prédevis se mettra à jour automatiquement.
           </li>
           <li>
-            Envoyez-nous le devis <a id="prequote_mail">en cliquant ici.</a>
+            Envoyez-nous le pré-devis <a id="prequote_mail">en cliquant ici.</a>
           </li>
         </a>
         </ol>
       </p>
       <p>
         Pour toute autre question, vous pouvez nous contacter
-        <a href="mailto:ncarrier@live.fr?subject=Prise%20de%20contact.">par mail</a>
+        <a href="mailto:carriern@outlook.fr?subject=Prise%20de%20contact.">par mail</a>
         ou <a href="tel:+33662804779">par téléphone.</a>
       </p>
       <p>

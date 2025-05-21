@@ -136,7 +136,7 @@ Prix HT : ${wt_price} €
 
         subject = encodeURIComponent("Demande de devis")
         body = encodeURIComponent(mailto_text)
-        link = `mailto:ncarrier@live.fr?subject=${subject}&body=${body}`;
+        link = `mailto:carriern@outlook.fr?subject=${subject}&body=${body}`;
         mailto_link.attr("href", link)
 }
 
