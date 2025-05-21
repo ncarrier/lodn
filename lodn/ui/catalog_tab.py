@@ -11,9 +11,9 @@
 #
 # You should have received a copy of the GNU General Public License along with
 # lodn. If not, see <https://www.gnu.org/licenses/>.
-from tkinter import Frame, ttk, Label, Entry, END, OptionMenu, StringVar
+from tkinter import Frame, ttk, Label, Entry, END, OptionMenu
 from tkinter.filedialog import askopenfilename
-from tkinter import Listbox, Scrollbar, INSERT
+from tkinter import INSERT
 from tkinter.filedialog import askdirectory
 from lodn.catalog.material import Material
 from lodn.catalog.category import Category
@@ -77,7 +77,7 @@ class CatalogTab(Frame):
     def __setup_name(self):
         self.__name_entry = Entry(self, textvariable=self.__ori_var.name)
         self.__name_entry.grid(row=0, column=2, sticky="we", padx=(6, 6),
-                               pady=(6, 6))
+                               pady=(6, 6), columnspan=2)
 
     def __setup_reference(self):
         self.__reference = ttk.Spinbox(
@@ -87,23 +87,23 @@ class CatalogTab(Frame):
             width=3
         )
         self.__reference.grid(row=1, column=2, sticky="we", padx=(6, 6),
-                              pady=(6, 6))
+                              pady=(6, 6), columnspan=2)
 
     def __setup_category(self):
         categories = [c.value for c in Category]
         self.__category = OptionMenu(self, self.__ori_var.category,
                                      *categories)
         self.__category.grid(row=2, column=2, sticky="we", padx=(6, 6),
-                             pady=(6, 6))
+                             pady=(6, 6), columnspan=2)
 
     def __set_command_string_var(self, event):
         self.__ori_var.comment.set(self.__comment.get("1.0", END))
 
     def __setup_comment(self):
-        self.__comment = TTKScrolledText(self, height=10)
+        self.__comment = TTKScrolledText(self, height=4)
         self.__comment.bind('<KeyRelease>', self.__set_command_string_var)
         self.__comment.grid(row=3, column=2, sticky="nswe", padx=(6, 6),
-                            pady=(6, 6))
+                            pady=(6, 6), columnspan=2)
 
     def __setup_paper_size(self):
         self.__paper_size = ttk.Spinbox(
@@ -114,7 +114,7 @@ class CatalogTab(Frame):
             width=3
         )
         self.__paper_size.grid(row=4, column=2, sticky="we", padx=(6, 6),
-                               pady=(6, 6))
+                               pady=(6, 6), columnspan=2)
 
     def __setup_diameter(self):
         self.__diameter = ttk.Spinbox(
@@ -125,7 +125,7 @@ class CatalogTab(Frame):
             width=3
         )
         self.__diameter.grid(row=5, column=2, sticky="we", padx=(6, 6),
-                             pady=(6, 6))
+                             pady=(6, 6), columnspan=2)
 
     def __setup_height(self):
         self.__height = ttk.Spinbox(
@@ -136,7 +136,7 @@ class CatalogTab(Frame):
             width=3
         )
         self.__height.grid(row=6, column=2, sticky="we", padx=(6, 6),
-                           pady=(6, 6))
+                           pady=(6, 6), columnspan=2)
 
     def __setup_length(self):
         self.__length = ttk.Spinbox(
@@ -147,7 +147,7 @@ class CatalogTab(Frame):
             width=3
         )
         self.__length.grid(row=7, column=2, sticky="we", padx=(6, 6),
-                           pady=(6, 6))
+                           pady=(6, 6), columnspan=2)
 
     def __setup_width(self):
         self.__width = ttk.Spinbox(
@@ -158,24 +158,26 @@ class CatalogTab(Frame):
             width=3
         )
         self.__width.grid(row=8, column=2, sticky="we", padx=(6, 6),
-                          pady=(6, 6))
+                          pady=(6, 6), columnspan=2)
 
     def __setup_materials(self):
-        materials_list = StringVar(
-            value=[m.value for m in list(Material)]
+        materials_list = [m.value for m in list(Material)]
+
+        self.__materials = mtv = ttk.Treeview(
+            self,
+            show="",
+            columns=("material"),
+            selectmode="extended",
+            height=5
         )
 
-        self.__materials = m = Listbox(
-            self,
-            listvariable=materials_list,
-            height=5,
-            selectmode="multiple"
-        )
-        s = Scrollbar(self, orient="vertical")
-        s.config(command=m.yview)
-        m.config(yscrollcommand=s.set)
-        m.grid(column=2, row=8, sticky="nsew")
-        s.grid(column=3, row=8, sticky="nsw")
+        for m in materials_list:
+            mtv.insert("", END, values=(m,))
+        s = ttk.Scrollbar(self, orient="vertical")
+        s.config(command=mtv.yview)
+        mtv.config(yscrollcommand=s.set)
+        s.grid(column=3, row=9, sticky="nsw")
+        mtv.grid(column=2, row=9, sticky="nsew")
 
     def __setup_quotation(self):
         self.__quotation = ttk.Spinbox(
@@ -185,8 +187,8 @@ class CatalogTab(Frame):
             textvariable=self.__ori_var.quotation,
             width=3
         )
-        self.__quotation.grid(row=9, column=2, sticky="we", padx=(6, 6),
-                              pady=(6, 6))
+        self.__quotation.grid(row=10, column=2, sticky="we", padx=(6, 6),
+                              pady=(6, 6), columnspan=2)
 
     def __photo_on_clicked(self, event):
         photo_path = askopenfilename(
@@ -222,12 +224,12 @@ class CatalogTab(Frame):
         # the materials list box.
         # to workaround that, we disable the listbox while the dialog is open
         # and the we reenable it and restore its selection state
-        self.__materials.config(state="disabled")
+        # self.__materials.config(state="disabled")
         folder_path = askdirectory(
             parent=self,
             title="Choose website folder"
         )
-        self.__materials.config(state="normal")
+        # self.__materials.config(state="normal")
         self.__update_materials(self.__origami)
         if not folder_path:
             return
@@ -301,11 +303,11 @@ class CatalogTab(Frame):
         self.__ori_var.width.set(origami.width)
 
     def __update_materials(self, origami):
-        self.__materials.selection_clear(0, 'end')
-        i = 0
+        self.__materials.selection_set(())
+        i = 1
         for m in Material:
             if m.value in origami.materials:
-                self.__materials.selection_set(i)
+                self.__materials.selection_add(f"I00{i}")
             i += 1
 
     def __update_quotation(self, origami):
@@ -324,7 +326,7 @@ class CatalogTab(Frame):
         i = 0
         self.__ori_var.materials = []
         for m in Material:
-            if i in self.__materials.curselection():
+            if i in self.__materials.selection():
                 self.__ori_var.materials.append(m.value)
             i += 1
         origami.save(self.__ori_var)
