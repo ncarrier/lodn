@@ -323,10 +323,10 @@ class CatalogTab(Frame):
             self.__instructions.config(text="no instructions available")
 
     def __save(self, origami):
-        i = 0
+        i = 1
         self.__ori_var.materials = []
         for m in Material:
-            if i in self.__materials.selection():
+            if f"I00{i}" in self.__materials.selection():
                 self.__ori_var.materials.append(m.value)
             i += 1
         origami.save(self.__ori_var)
