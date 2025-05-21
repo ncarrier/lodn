@@ -62,6 +62,10 @@ class Origami:
         return self.__meta.get("comment", "")
 
     @property
+    def reference(self):
+        return self.__meta.get("reference", "")
+
+    @property
     def diameter(self):
         return self.__meta.get("diameter", 0)
 
@@ -127,7 +131,8 @@ class Origami:
     def __str__(self):
         return (f"{self.name=} - {self.category=} - {self.comment=} - "
                 f"{self.diameter=} - {self.height=} - {self.length=} - "
-                f"{self.materials=} - {self.quotation=} - {self.width}")
+                f"{self.materials=} - {self.quotation=} - {self.reference} - "
+                f"{self.width}")
 
     def save(self, variables):
         v = variables
@@ -146,7 +151,8 @@ class Origami:
             "length": v.length.get(),
             "width": v.width.get(),
             "materials": v.materials,
-            "quotation": v.quotation.get()
+            "quotation": v.quotation.get(),
+            "reference": v.reference.get()
         }
         dump = json.dumps(json_dict, indent=4)
         with open(self.__json_path, "w") as f:

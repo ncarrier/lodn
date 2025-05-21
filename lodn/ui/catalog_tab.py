@@ -31,6 +31,7 @@ from gi.repository import GstVideo  # noqa E402,F401
 class CatalogTab(Frame):
     fields = [
         "name",
+        "reference",
         "category",
         "comment",
         "paper size (mm)",
@@ -39,7 +40,7 @@ class CatalogTab(Frame):
         "length (mm)",
         "width (mm)",
         "materials",
-        "quotation (min)"
+        "quotation for 10 (min)"
     ]
 
     def __init__(self, parent, catalog):
@@ -78,11 +79,21 @@ class CatalogTab(Frame):
         self.__name_entry.grid(row=0, column=2, sticky="we", padx=(6, 6),
                                pady=(6, 6))
 
+    def __setup_reference(self):
+        self.__reference = ttk.Spinbox(
+            self,
+            from_=0,
+            textvariable=self.__ori_var.reference,
+            width=3
+        )
+        self.__reference.grid(row=1, column=2, sticky="we", padx=(6, 6),
+                              pady=(6, 6))
+
     def __setup_category(self):
         categories = [c.value for c in Category]
         self.__category = OptionMenu(self, self.__ori_var.category,
                                      *categories)
-        self.__category.grid(row=1, column=2, sticky="we", padx=(6, 6),
+        self.__category.grid(row=2, column=2, sticky="we", padx=(6, 6),
                              pady=(6, 6))
 
     def __set_command_string_var(self, event):
@@ -91,7 +102,7 @@ class CatalogTab(Frame):
     def __setup_comment(self):
         self.__comment = TTKScrolledText(self, height=10)
         self.__comment.bind('<KeyRelease>', self.__set_command_string_var)
-        self.__comment.grid(row=2, column=2, sticky="nswe", padx=(6, 6),
+        self.__comment.grid(row=3, column=2, sticky="nswe", padx=(6, 6),
                             pady=(6, 6))
 
     def __setup_paper_size(self):
@@ -102,7 +113,7 @@ class CatalogTab(Frame):
             textvariable=self.__ori_var.paper_size,
             width=3
         )
-        self.__paper_size.grid(row=3, column=2, sticky="we", padx=(6, 6),
+        self.__paper_size.grid(row=4, column=2, sticky="we", padx=(6, 6),
                                pady=(6, 6))
 
     def __setup_diameter(self):
@@ -113,7 +124,7 @@ class CatalogTab(Frame):
             textvariable=self.__ori_var.diameter,
             width=3
         )
-        self.__diameter.grid(row=4, column=2, sticky="we", padx=(6, 6),
+        self.__diameter.grid(row=5, column=2, sticky="we", padx=(6, 6),
                              pady=(6, 6))
 
     def __setup_height(self):
@@ -124,7 +135,7 @@ class CatalogTab(Frame):
             textvariable=self.__ori_var.height,
             width=3
         )
-        self.__height.grid(row=5, column=2, sticky="we", padx=(6, 6),
+        self.__height.grid(row=6, column=2, sticky="we", padx=(6, 6),
                            pady=(6, 6))
 
     def __setup_length(self):
@@ -135,7 +146,7 @@ class CatalogTab(Frame):
             textvariable=self.__ori_var.length,
             width=3
         )
-        self.__length.grid(row=6, column=2, sticky="we", padx=(6, 6),
+        self.__length.grid(row=7, column=2, sticky="we", padx=(6, 6),
                            pady=(6, 6))
 
     def __setup_width(self):
@@ -146,7 +157,7 @@ class CatalogTab(Frame):
             textvariable=self.__ori_var.width,
             width=3
         )
-        self.__width.grid(row=7, column=2, sticky="we", padx=(6, 6),
+        self.__width.grid(row=8, column=2, sticky="we", padx=(6, 6),
                           pady=(6, 6))
 
     def __setup_materials(self):
@@ -202,7 +213,7 @@ class CatalogTab(Frame):
 
     def __setup_instructions(self):
         self.__instructions = instr = ttk.Label(self, cursor="hand2")
-        instr.grid(row=9, column=4, sticky="we", padx=(6, 6), pady=(6, 6),
+        instr.grid(row=10, column=4, sticky="we", padx=(6, 6), pady=(6, 6),
                    rowspan=1)
         instr.bind("<Button-1>", self.__instr_on_clicked)
 
@@ -230,7 +241,7 @@ class CatalogTab(Frame):
             self, text="Export",
             command=self.__export_button_on_clicked
         )
-        self.__export_button.grid(column=4, row=10, pady=3, padx=3)
+        self.__export_button.grid(column=4, row=11, pady=3, padx=3)
 
     def __setup_controls(self):
         i = 0
@@ -240,6 +251,7 @@ class CatalogTab(Frame):
             i += 1
 
         self.__setup_name()
+        self.__setup_reference()
         self.__setup_category()
         self.__setup_comment()
         self.__setup_paper_size()
@@ -264,6 +276,9 @@ class CatalogTab(Frame):
 
     def __update_category(self, origami):
         self.__ori_var.category.set(origami.category)
+
+    def __update_reference(self, origami):
+        self.__ori_var.reference.set(origami.reference)
 
     def __update_comment(self, origami):
         self.__ori_var.comment.set(origami.comment)
@@ -327,6 +342,7 @@ class CatalogTab(Frame):
         self.__save_current_origami(tv)
 
         origami = self.__get_current_origami()
+        self.__update_name(origami)
         self.__update_name(origami)
         self.__update_category(origami)
         self.__update_comment(origami)

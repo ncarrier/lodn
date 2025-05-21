@@ -4,6 +4,7 @@ from tkinter import IntVar, StringVar
 class OrigamiVariables(object):
     def __init__(self):
         self.name = StringVar()
+        self.reference = IntVar()
         self.category = StringVar()
         self.comment = StringVar()
         self.paper_size = IntVar()
