@@ -86,7 +86,7 @@
                     <table class="origami_table">
                       <tr>
                         <td class="description">
-                          <h2>{{ origami.name.capitalize() }}</h2>
+                          <h2>{{ origami.name.capitalize() }} (Réf. {{ origami.reference }})</h2>
                           <p class="comment">{{ origami.comment }}</p>
                           <h3>Caractéristiques</h3>
                           <ul>
@@ -104,6 +104,7 @@
                             {% endif %}
                           </ul>
                           <input type="hidden" class="diameter" value="{{origami.diameter}}">
+                          <input type="hidden" class="reference" value="{{origami.reference}}">
                           <input type="hidden" class="height" value="{{origami.height}}">
                           <input type="hidden" class="length" value="{{origami.length}}">
                           <input type="hidden" class="width" value="{{origami.width}}">

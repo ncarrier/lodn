@@ -26,6 +26,7 @@ function filter_materials() {
 
 dimension_translation = {
         "diameter": "diamètre",
+        "reference": "référence",
         "height": "hauteur",
         "length": "longeur",
         "width": "largeur"
@@ -80,6 +81,7 @@ function update_prequote_and_mailto() {
         prequote_text = `<table>
   <tr>
     <th>Nom</th>
+    <th>Référence</th>
     <th>Quantité</th>
     <th>Durée unitaire (min)</th>
     <th>Durée totale (min)</th>
@@ -89,7 +91,7 @@ function update_prequote_and_mailto() {
 
 Ne pas modifier le texte sous la ligne suivante.
 ---------------------------------------------------------------
-Nom;Quantité;Durée unitaire;Durée totale
+Nom;Référence;Quantité;Durée unitaire;Durée totale
 `
 
         // bodies
@@ -103,15 +105,17 @@ Nom;Quantité;Durée unitaire;Durée totale
                 if (origami_num == 0)
                         return;
                 origami_name = $(this).find(".origami_name").attr("value");
+                reference = $(this).find(".reference").attr("value");
                 unit_duration = quotation / 10;
                 duration = unit_duration * origami_num;
                 prequote_text += `  <tr>
     <td>${origami_name}</td>
+    <td>${reference}</td>
     <td>${origami_num}</td>
     <td>${unit_duration}</td>
     <td>${format_duration_in_minutes(duration)}</td>
   </tr>`;
-                mailto_text += `${origami_name};${origami_num};${unit_duration};${duration}
+                mailto_text += `${origami_name};${reference};${origami_num};${unit_duration};${duration}
 `
                 total_duration += duration;
         });

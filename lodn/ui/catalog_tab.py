@@ -343,7 +343,7 @@ class CatalogTab(Frame):
 
         origami = self.__get_current_origami()
         self.__update_name(origami)
-        self.__update_name(origami)
+        self.__update_reference(origami)
         self.__update_category(origami)
         self.__update_comment(origami)
         self.__update_paper_size(origami)

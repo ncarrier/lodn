@@ -63,7 +63,7 @@ class Origami:
 
     @property
     def reference(self):
-        return self.__meta.get("reference", "")
+        return self.__meta.get("reference", 0)
 
     @property
     def diameter(self):
