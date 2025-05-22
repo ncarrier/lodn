@@ -241,7 +241,21 @@ class CatalogTab(Frame):
         self.__export_button.grid(column=4, row=11, pady=3, padx=3)
 
     def __autonumber_button_on_clicked(self):
-        print("clicked")
+        # first find the maximum number
+        max_reference = 0
+        for o in self.__catalog.catalog:
+            if o.reference > max_reference:
+                max_reference = o.reference
+
+        # number all origamis with reference 0 starting from the maximum
+        current_reference = max_reference + 1
+        current_origami = self.__get_current_origami()
+        for o in self.__catalog.catalog:
+            if o.reference == 0:
+                o.reference = current_reference
+                if o.name == current_origami.name:
+                    self.__update_reference(o)
+                current_reference += 1
 
     def __setup_autonumber(self):
         self.__autonumber_button = ttk.Button(
