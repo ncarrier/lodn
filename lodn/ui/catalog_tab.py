@@ -56,6 +56,7 @@ class CatalogTab(Frame):
         self.__setup_photo()
         self.__setup_instructions()
         self.__setup_export()
+        self.__setup_autonumber()
 
     def __setup_treeview(self):
         self.__treeview = tv = ttk.Treeview(
@@ -238,6 +239,16 @@ class CatalogTab(Frame):
             command=self.__export_button_on_clicked
         )
         self.__export_button.grid(column=4, row=11, pady=3, padx=3)
+
+    def __autonumber_button_on_clicked(self):
+        print("clicked")
+
+    def __setup_autonumber(self):
+        self.__autonumber_button = ttk.Button(
+            self, text="Autonumber",
+            command=self.__autonumber_button_on_clicked
+        )
+        self.__autonumber_button.grid(column=3, row=11, pady=3, padx=3)
 
     def __setup_controls(self):
         i = 0
